@@ -1,0 +1,820 @@
+# Copyright (C) 2024 kraftplugins
+# This file is distributed under the same license as the Demo Importer Plus package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Demo Importer Plus 2.0.0\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/demo-importer-plus\n"
+"POT-Creation-Date: 2024-09-18 06:21:15+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: admin/partials/getting-started.php:11
+#: build/demo-importer-plus/admin/partials/getting-started.php:11
+msgid "Getting Started"
+msgstr ""
+
+#: admin/partials/getting-started.php:16
+#: build/demo-importer-plus/admin/partials/getting-started.php:16
+msgid "Select Page Builder"
+msgstr ""
+
+#: admin/partials/getting-started.php:17
+#: build/demo-importer-plus/admin/partials/getting-started.php:17
+msgid ""
+"We offer starter templates that can be imported in one click. These sites "
+"are available in the following page builders. Please choose your preferred "
+"page builder from the list below."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Demo Importer Plus"
+msgstr ""
+
+#: build/demo-importer-plus/inc/Ajax.php:159
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:137
+#: inc/Ajax.php:164 inc/classes/class-demo-importer-plus.php:160
+msgid "Get Pro"
+msgstr ""
+
+#: build/demo-importer-plus/inc/Ajax.php:160
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:138
+#: inc/Ajax.php:165 inc/classes/class-demo-importer-plus.php:161
+msgid "Activate License"
+msgstr ""
+
+#: build/demo-importer-plus/inc/Ajax.php:212
+msgid "Invalid request."
+msgstr ""
+
+#: build/demo-importer-plus/inc/Ajax.php:255 inc/Ajax.php:244
+msgid "Page has been imported successfully."
+msgstr ""
+
+#: build/demo-importer-plus/inc/Ajax.php:378 inc/Ajax.php:367
+msgid "Plugin \"%s\" is Activated"
+msgstr ""
+
+#: build/demo-importer-plus/inc/DemoServer.php:243 inc/DemoServer.php:243
+msgid "Invalid response code from server"
+msgstr ""
+
+#: build/demo-importer-plus/inc/DemoServer.php:250 inc/DemoServer.php:250
+msgid "Server connection successful."
+msgstr ""
+
+#: build/demo-importer-plus/inc/DemoSiteImporter.php:103
+#: inc/DemoSiteImporter.php:103
+msgid "Missing step parameter"
+msgstr ""
+
+#: build/demo-importer-plus/inc/PluginManagement.php:116
+#: inc/PluginManagement.php:116
+msgid ""
+"Insufficient Permission. Please contact your Super Admin to allow the "
+"install required plugin permissions."
+msgstr ""
+
+#: build/demo-importer-plus/inc/PreviousSiteCleanup.php:50
+#: inc/PreviousSiteCleanup.php:50
+msgid "Invalid step"
+msgstr ""
+
+#: build/demo-importer-plus/inc/PreviousSiteCleanup.php:90
+#: build/demo-importer-plus/inc/PreviousSiteCleanup.php:103
+#: build/demo-importer-plus/inc/PreviousSiteCleanup.php:117
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:65
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:142
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:320
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:497
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:537
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:596
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:129
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:182
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:246
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:319
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:373
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:563
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:694
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:721
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:754
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:818
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:859
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:895
+#: inc/PreviousSiteCleanup.php:90 inc/PreviousSiteCleanup.php:103
+#: inc/PreviousSiteCleanup.php:117
+#: inc/classes/class-demo-importer-plus-ajax.php:65
+#: inc/classes/class-demo-importer-plus-ajax.php:142
+#: inc/classes/class-demo-importer-plus-ajax.php:320
+#: inc/classes/class-demo-importer-plus-ajax.php:497
+#: inc/classes/class-demo-importer-plus-ajax.php:537
+#: inc/classes/class-demo-importer-plus-ajax.php:596
+#: inc/classes/class-demo-importer-plus-sites-importer.php:129
+#: inc/classes/class-demo-importer-plus-sites-importer.php:182
+#: inc/classes/class-demo-importer-plus-sites-importer.php:246
+#: inc/classes/class-demo-importer-plus-sites-importer.php:319
+#: inc/classes/class-demo-importer-plus-sites-importer.php:373
+#: inc/classes/class-demo-importer-plus-sites-importer.php:563
+#: inc/classes/class-demo-importer-plus-sites-importer.php:694
+#: inc/classes/class-demo-importer-plus-sites-importer.php:721
+#: inc/classes/class-demo-importer-plus-sites-importer.php:754
+#: inc/classes/class-demo-importer-plus-sites-importer.php:818
+#: inc/classes/class-demo-importer-plus-sites-importer.php:859
+#: inc/classes/class-demo-importer-plus-sites-importer.php:895
+msgid "You are not allowed to perform this action"
+msgstr ""
+
+#: build/demo-importer-plus/inc/PreviousSiteCleanup.php:137
+#: inc/PreviousSiteCleanup.php:137
+msgid "Deleted Term: %s"
+msgstr ""
+
+#: build/demo-importer-plus/inc/WidgetsImporter.php:87
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:108
+#: inc/WidgetsImporter.php:87
+#: inc/importers/class-demo-importer-plus-widget-importer.php:108
+msgid "Widget area does not exist in theme (using Inactive)"
+msgstr ""
+
+#: build/demo-importer-plus/inc/WidgetsImporter.php:107
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:130
+#: inc/WidgetsImporter.php:107
+#: inc/importers/class-demo-importer-plus-widget-importer.php:130
+msgid "Site does not support widget"
+msgstr ""
+
+#: build/demo-importer-plus/inc/WidgetsImporter.php:127
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:151
+#: inc/WidgetsImporter.php:127
+#: inc/importers/class-demo-importer-plus-widget-importer.php:151
+msgid "Widget already exists"
+msgstr ""
+
+#: build/demo-importer-plus/inc/WidgetsImporter.php:190
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:216
+#: inc/WidgetsImporter.php:190
+#: inc/importers/class-demo-importer-plus-widget-importer.php:216
+msgid "Imported"
+msgstr ""
+
+#: build/demo-importer-plus/inc/WidgetsImporter.php:193
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:219
+#: inc/WidgetsImporter.php:193
+#: inc/importers/class-demo-importer-plus-widget-importer.php:219
+msgid "Imported to Inactive"
+msgstr ""
+
+#: build/demo-importer-plus/inc/WidgetsImporter.php:198
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:224
+#: inc/WidgetsImporter.php:198
+#: inc/importers/class-demo-importer-plus-widget-importer.php:224
+msgid "No Title"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:69
+#: inc/classes/class-demo-importer-plus-ajax.php:69
+msgid "Invalid API URL"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:82
+#: inc/classes/class-demo-importer-plus-ajax.php:82
+msgid "Invalid Post Meta"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:89
+#: inc/classes/class-demo-importer-plus-ajax.php:89
+msgid "Invalid Post ID or Elementor Meta"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:152
+#: inc/classes/class-demo-importer-plus-ajax.php:152
+msgid "Theme Activated"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:164
+#: inc/classes/class-demo-importer-plus-ajax.php:164
+msgid "Provided API URL is empty! Please try again!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:276
+#: inc/classes/class-demo-importer-plus-ajax.php:276
+msgid "Error: You don't have the required permissions to install plugins."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:307
+#: inc/classes/class-demo-importer-plus-ajax.php:307
+msgid "Plugin Activated"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:461
+#: inc/classes/class-demo-importer-plus-ajax.php:461
+msgid "User does not have permission!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:524
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:166
+#: inc/classes/class-demo-importer-plus-ajax.php:524
+#: inc/classes/class-demo-importer-plus-sites-importer.php:166
+msgid "Customizer data is empty!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:541
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:186
+#: inc/classes/class-demo-importer-plus-ajax.php:541
+#: inc/classes/class-demo-importer-plus-sites-importer.php:186
+msgid ""
+"If XMLReader is not available, it imports all other settings and only skips "
+"XML import. This creates an incomplete website. We should bail early and "
+"not import anything if this is not present."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:569
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:217
+#: inc/classes/class-demo-importer-plus-ajax.php:569
+#: inc/classes/class-demo-importer-plus-sites-importer.php:217
+msgid "There was an error downloading the XML file."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-ajax.php:583
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:231
+#: inc/classes/class-demo-importer-plus-ajax.php:583
+#: inc/classes/class-demo-importer-plus-sites-importer.php:231
+msgid "Invalid site XML file!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:89
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:89
+msgid "Required File Permissions to import the templates are missing."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:91
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:91
+msgid "This is usually due to inconsistent file permissions."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:94
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:94
+msgid ""
+"You can easily update permissions by adding the following code into the "
+"wp-config.php file."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:233
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:233
+msgid "Enabled"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:236
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:236
+msgid "Disabled"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:305
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:349
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:305
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:349
+msgid "Yes"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:308
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:352
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:308
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:352
+msgid "No"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:364
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:364
+msgid "You currently have no scheduled cron events."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:136
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:326
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:380
+#: inc/classes/class-demo-importer-plus-sites-importer.php:136
+#: inc/classes/class-demo-importer-plus-sites-importer.php:326
+#: inc/classes/class-demo-importer-plus-sites-importer.php:380
+msgid "Requires Demo ID."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:354
+#: inc/classes/class-demo-importer-plus-sites-importer.php:354
+msgid "Site options are empty!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer.php:412
+#: inc/classes/class-demo-importer-plus-sites-importer.php:412
+msgid "Widget data is empty!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:144
+#: inc/classes/class-demo-importer-plus.php:167
+msgid ""
+"Syncing template library in the background. The process can take anywhere "
+"between 2 to 3 minutes. We will notify you once done."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:145
+#: inc/classes/class-demo-importer-plus.php:168
+msgid ""
+"Some of the files required during the import process are "
+"missing.<br/><br/>Please try again after some time."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:146
+#: inc/classes/class-demo-importer-plus.php:169
+msgid ""
+"<p>WordPress debug mode is currently enabled on your website. This has "
+"interrupted the import process..</p><p>Kindly disable debug mode and try "
+"importing Starter Template again.</p><p>You can add the following code into "
+"the wp-config.php file to disable debug "
+"mode.</p><p><code>define('WP_DEBUG', false);</code></p>"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:148
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:150
+#: inc/classes/class-demo-importer-plus.php:171
+#: inc/classes/class-demo-importer-plus.php:173
+#. translators: %s is a documentation link.
+msgid ""
+"<p>Your website is facing a temporary issue in connecting the template "
+"server.</p><p>Read <a href=\"%s\" target=\"_blank\">article</a> to resolve "
+"the issue and continue importing template.</p>"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:154
+#: inc/classes/class-demo-importer-plus.php:177
+#. translators: %s are white label strings.
+msgid ""
+"Warning! Import process is not complete. Don't close the window until "
+"import process complete. Do you still want to leave the window?"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:155
+#: inc/classes/class-demo-importer-plus.php:178
+msgid "Done! View Site"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:157
+#: inc/classes/class-demo-importer-plus.php:180
+#. translators: %s is a template name
+msgid "Import \"%s\" Template"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:160
+#: inc/classes/class-demo-importer-plus.php:183
+msgid "Installing Required Plugins.."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:162
+#: inc/classes/class-demo-importer-plus.php:185
+#. translators: %s are white label strings.
+msgid "Installing Theme.."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:175
+#: inc/classes/class-demo-importer-plus.php:198
+msgid "Dismiss this notice."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:179
+#: inc/classes/class-demo-importer-plus.php:202
+msgid "One Last Step.."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:180
+#: inc/classes/class-demo-importer-plus.php:203
+msgid "Your Selected Website is Being Imported."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:181
+#: inc/classes/class-demo-importer-plus.php:204
+msgid "Your Selected Template is Being Imported."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:195
+#: inc/classes/class-demo-importer-plus.php:218
+msgid "XMLReader Support Missing"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:197
+#: inc/classes/class-demo-importer-plus.php:220
+#. translators: %s doc link.
+msgid ""
+"You're close to importing the template. To complete the process, enable "
+"XMLReader support on your website.."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:197
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:202
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:207
+#: inc/classes/class-demo-importer-plus.php:220
+#: inc/classes/class-demo-importer-plus.php:225
+#: inc/classes/class-demo-importer-plus.php:230
+msgid ""
+"Read an article <a href=\"%s\" target=\"_blank\">here</a> to resolve the "
+"issue."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:200
+#: inc/classes/class-demo-importer-plus.php:223
+msgid "cURL Support Missing"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:202
+#: inc/classes/class-demo-importer-plus.php:225
+#. translators: %s doc link.
+msgid "To run a smooth import, kindly enable cURL support on your website."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:205
+#: inc/classes/class-demo-importer-plus.php:228
+msgid "Disable Debug Mode"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:207
+#: inc/classes/class-demo-importer-plus.php:230
+#. translators: %s doc link.
+msgid ""
+"WordPress debug mode is currently enabled on your website. With this, any "
+"errors from third-party plugins might affect the import process."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:207
+#: inc/classes/class-demo-importer-plus.php:230
+msgid ""
+"Kindly disable it to continue importing the Starter Template. To do so, you "
+"can add the following code into the wp-config.php file."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:210
+#: inc/classes/class-demo-importer-plus.php:233
+msgid "Update Plugin"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:212
+#: inc/classes/class-demo-importer-plus.php:235
+#. translators: %s update page link.
+msgid "Updates are available for plugins used in this starter template."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:212
+#: inc/classes/class-demo-importer-plus.php:235
+msgid ""
+"Kindly <a href=\"%s\" target=\"_blank\">update</a> them for a successful "
+"import. Skipping this step might break the template design/feature."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:215
+#: inc/classes/class-demo-importer-plus.php:238
+msgid "Required Plugins Missing"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:216
+#: inc/classes/class-demo-importer-plus.php:239
+msgid ""
+"This starter template requires premium plugins. As these are third party "
+"premium plugins, you'll need to purchase, install and activate them first."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:219
+#: inc/classes/class-demo-importer-plus.php:242
+msgid "Dynamic Page"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:220
+#: inc/classes/class-demo-importer-plus.php:243
+msgid ""
+"The page template you are about to import contains a dynamic widget/module. "
+"Please note this dynamic data will not be available with the imported page."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:220
+#: inc/classes/class-demo-importer-plus.php:243
+msgid "You will need to add it manually on the page."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:220
+#: inc/classes/class-demo-importer-plus.php:243
+msgid "This dynamic content will be available when you import the entire site."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus.php:370
+#: inc/classes/class-demo-importer-plus.php:397
+msgid "Elementor"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/batch-processing/helpers/class-wp-background-process-demo-importer-plus-importer.php:80
+#: inc/importers/batch-processing/helpers/class-wp-background-process-demo-importer-plus-importer.php:80
+msgid "All processes are complete"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/batch-processing/helpers/class-wp-background-process.php:440
+#: inc/importers/batch-processing/helpers/class-wp-background-process.php:440
+#. translators: %d are the minutes.
+msgid "Every %d Minutes"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/class-demo-importer-plus-widget-importer.php:73
+#: inc/importers/class-demo-importer-plus-widget-importer.php:73
+msgid "Import data could not be read. Please try a different file."
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-demo-importer-plus-wxr-importer.php:369
+#: inc/importers/wxr-importer/class-demo-importer-plus-wxr-importer.php:369
+msgid "Import complete!"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:226
+#: inc/WPWXRImporter.php:238
+#: inc/importers/wxr-importer/class-wxr-importer.php:226
+msgid "Could not open the file for parsing"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:264
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:383
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:459
+#: inc/WPWXRImporter.php:276 inc/WPWXRImporter.php:395
+#: inc/WPWXRImporter.php:471
+#: inc/importers/wxr-importer/class-wxr-importer.php:264
+#: inc/importers/wxr-importer/class-wxr-importer.php:383
+#: inc/importers/wxr-importer/class-wxr-importer.php:459
+#. translators: %1$s is WXR version, %2$s is max supported WXR version.
+msgid ""
+"This WXR file (version %1$s) is newer than the importer (version %2$s) and "
+"may not be supported. Please consider updating."
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:610
+#: inc/WPWXRImporter.php:622
+#: inc/importers/wxr-importer/class-wxr-importer.php:610
+msgid "The file does not exist, please try again."
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:670
+#: inc/WPWXRImporter.php:682
+#: inc/importers/wxr-importer/class-wxr-importer.php:670
+msgid "Invalid author mapping"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:772
+#: inc/WPWXRImporter.php:784
+#: inc/importers/wxr-importer/class-wxr-importer.php:772
+msgid "Cannot import auto-draft posts"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:871
+#: inc/WPWXRImporter.php:883
+#: inc/importers/wxr-importer/class-wxr-importer.php:871
+#. translators: %1$s is the import message, %2$s is post type.
+msgid "Failed to import \"%1$s\": Invalid post type %2$s"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:885
+#: inc/WPWXRImporter.php:897
+#: inc/importers/wxr-importer/class-wxr-importer.php:885
+#. translators: %1$s single post type, %2$s is post title.
+msgid "%1$s \"%2$s\" already exists."
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:984
+#: inc/WPWXRImporter.php:996
+#: inc/importers/wxr-importer/class-wxr-importer.php:984
+#. translators: %s is post title
+msgid "Skipping attachment \"%s\", fetching attachments disabled"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1009
+#: inc/WPWXRImporter.php:1021
+#: inc/importers/wxr-importer/class-wxr-importer.php:1009
+#. translators: %1$s is the post title, %2$s is post type.
+msgid "Failed to import \"%1$s\" (%2$s)"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1045
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2032
+#: inc/WPWXRImporter.php:1057 inc/WPWXRImporter.php:2052
+#: inc/importers/wxr-importer/class-wxr-importer.php:1045
+#: inc/importers/wxr-importer/class-wxr-importer.php:2032
+#. translators: %1$s is the post title, %2$s is post type.
+#. translators: %1$s is the taxonomy name, %2$s is taxonomy.
+msgid "Imported \"%1$s\" (%2$s)"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1053
+#: inc/WPWXRImporter.php:1065
+#: inc/importers/wxr-importer/class-wxr-importer.php:1053
+#. translators: %1$s is the original post id, %2$s is old post id.
+msgid "Post %1$d remapped to %2$d"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1209
+#: inc/WPWXRImporter.php:1221
+#: inc/importers/wxr-importer/class-wxr-importer.php:1209
+msgid "Invalid file type"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1776
+#: inc/WPWXRImporter.php:1796
+#: inc/importers/wxr-importer/class-wxr-importer.php:1776
+#. translators: %s user login name
+msgid "Failed to import user \"%s\""
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1801
+#: inc/WPWXRImporter.php:1821
+#: inc/importers/wxr-importer/class-wxr-importer.php:1801
+#. translators: %s user login name
+msgid "Imported user \"%s\""
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:1808
+#: inc/WPWXRImporter.php:1828
+#: inc/importers/wxr-importer/class-wxr-importer.php:1808
+#. translators: %1$s original user Id, %2$s old user Id.
+msgid "User %1$d remapped to %2$d"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2003
+#: inc/WPWXRImporter.php:2023
+#: inc/importers/wxr-importer/class-wxr-importer.php:2003
+#. translators: %1$s is the taxonomy, %2$s is taxonomy name.
+msgid "Failed to import %1$s %2$s"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2040
+#: inc/WPWXRImporter.php:2060
+#: inc/importers/wxr-importer/class-wxr-importer.php:2040
+#. translators: %1$s is term original id, %2$s is term id.
+msgid "Term %1$d remapped to %2$d"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2103
+#: inc/functions.php:43 inc/importers/wxr-importer/class-wxr-importer.php:2103
+#. translators: %1$s is error code, %2$s is error code header, %3$s is url.
+msgid "Remote server returned %1$d %2$s for %3$s"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2117
+#: inc/functions.php:57 inc/importers/wxr-importer/class-wxr-importer.php:2117
+msgid "Remote file is incorrect size"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2123
+#: inc/functions.php:63 inc/importers/wxr-importer/class-wxr-importer.php:2123
+msgid "Zero size file downloaded"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2130
+#: inc/importers/wxr-importer/class-wxr-importer.php:2130
+#. translators: %s max file size.
+msgid "Remote file is too large, limit is %s"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2189
+#: inc/WPWXRImporter.php:2151
+#: inc/importers/wxr-importer/class-wxr-importer.php:2189
+#. translators: %d is post id.
+msgid "Running post-processing for post %d"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2205
+#: inc/WPWXRImporter.php:2167
+#: inc/importers/wxr-importer/class-wxr-importer.php:2205
+#. translators: %1$s is post title, %2$s is post id.
+msgid "Could not find the post parent for \"%1$s\" (post #%2$d)"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2213
+#: inc/WPWXRImporter.php:2175
+#: inc/importers/wxr-importer/class-wxr-importer.php:2213
+#. translators: %1$d is post id, %2$d is parent post id.
+msgid "Post %1$d was imported with parent %2$d, but could not be found"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2230
+#: inc/WPWXRImporter.php:2192
+#: inc/importers/wxr-importer/class-wxr-importer.php:2230
+#. translators: %1$s is the post title, %2$s is post id.
+msgid "Could not find the author for \"%1$s\" (post #%2$d)"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2238
+#: inc/WPWXRImporter.php:2200
+#: inc/importers/wxr-importer/class-wxr-importer.php:2238
+#. translators: %1$d is post id, %2$s is author slug.
+msgid "Post %1$d was imported with author \"%2$s\", but could not be found"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2267
+#: inc/WPWXRImporter.php:2229
+#: inc/importers/wxr-importer/class-wxr-importer.php:2267
+#. translators: %d is post id.
+msgid "Post %d was marked for post-processing, but none was required."
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2281
+#: inc/WPWXRImporter.php:2243
+#: inc/importers/wxr-importer/class-wxr-importer.php:2281
+#. translators: %1$s is the post title, %2$s is post id.
+msgid "Could not update \"%1$s\" (post #%2$d) with mapped data"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2336
+#: inc/WPWXRImporter.php:2298
+#: inc/importers/wxr-importer/class-wxr-importer.php:2336
+#. translators: %1$s is the post title, %2$s is post id.
+msgid "Could not find the menu object for \"%1$s\" (post #%2$d)"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2344
+#: inc/WPWXRImporter.php:2306
+#: inc/importers/wxr-importer/class-wxr-importer.php:2344
+#. translators: %1$s is post id, %2$s is post object id, %3$s is menu type.
+msgid ""
+"Post %1$d was imported with object \"%2$d\" of type \"%3$s\", but could not "
+"be found"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2376
+#: inc/WPWXRImporter.php:2338
+#: inc/importers/wxr-importer/class-wxr-importer.php:2376
+#. translators: %d is comment id.
+msgid "Could not find the comment parent for comment #%d"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2383
+#: inc/WPWXRImporter.php:2345
+#: inc/importers/wxr-importer/class-wxr-importer.php:2383
+#. translators: %1$s is comment id, %2$s is parent comment id.
+msgid "Comment %1$d was imported with parent %2$d, but could not be found"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2400
+#: inc/WPWXRImporter.php:2362
+#: inc/importers/wxr-importer/class-wxr-importer.php:2400
+#. translators: %d is comment id.
+msgid "Could not find the author for comment #%d"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2407
+#: inc/WPWXRImporter.php:2369
+#: inc/importers/wxr-importer/class-wxr-importer.php:2407
+#. translators: %1$d is comment id, %2$d is author id.
+msgid "Comment %1$d was imported with author %2$d, but could not be found"
+msgstr ""
+
+#: build/demo-importer-plus/inc/importers/wxr-importer/class-wxr-importer.php:2427
+#: inc/WPWXRImporter.php:2389
+#: inc/importers/wxr-importer/class-wxr-importer.php:2427
+#. translators: %d is comment id.
+msgid "Could not update comment #%d with mapped data"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://kraftplugins.com/demo-importer-plus"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Demo Importer Plus allows you to Import the demo content, widgets, "
+"customizer settings and theme settings with a single click without any "
+"hassle."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "kraftplugins"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://kraftplugins.com/"
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:251
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:251
+#. translators: %1$s Memory Limit, %2$s Recommended memory limit.
+msgctxt "Recommended Memory Limit"
+msgid "Current memory limit %1$s. We recommend setting memory to at least %2$s."
+msgstr ""
+
+#: build/demo-importer-plus/inc/classes/class-demo-importer-plus-sites-importer-log.php:316
+#: inc/classes/class-demo-importer-plus-sites-importer-log.php:316
+msgctxt "PHP Version"
+msgid "We recommend to use php 5.4 or higher"
+msgstr ""
