@@ -22,6 +22,7 @@ class Ajax {
 		$method = $_SERVER[ 'REQUEST_METHOD' ] ?? 'GET';
 
 		$request = new WP_REST_Request( $method );
+
 		if ( isset( $_SERVER[ 'HTTP_X_WP_NONCE' ] ) || isset( $_REQUEST[ '_nonce' ] ) ) {
 			$request->set_header( 'X-WP-Nonce', $_SERVER[ 'HTTP_X_WP_NONCE' ] ?? $_REQUEST[ '_nonce' ] );
 
@@ -53,6 +54,7 @@ class Ajax {
 					break;
 				case 'demo-categories':
 					$data = static::get_demo_categories( $request );
+					break;
 					break;
 				case 'import-demo':
 					if ( $request->get_param( 'id' ) ) {
@@ -94,7 +96,7 @@ class Ajax {
 					if ( ! current_user_can( 'manage_options' ) ) {
 						$data = new WP_Error( 'permission_denied', 'You do not have permission to delete site.', 403 );
 					} else {
-						$data = static::cleanup_previous_site( $request );
+					$data = static::cleanup_previous_site( $request );
 					}
 					break;
 				default:
@@ -200,6 +202,22 @@ class Ajax {
 	 * @return WP_Error|array
 	 */
 	protected static function cleanup_previous_site( $request ) {
+
+		$method = $_SERVER[ 'REQUEST_METHOD' ] ?? 'GET';
+		$step   = $request->get_param( 'step' ) ?? '';
+
+		$steps_and_methods = [
+			'prepare'                => WP_REST_Server::READABLE,
+			'reset'                  => WP_REST_Server::DELETABLE,
+			'delete_site_customizer' => WP_REST_Server::DELETABLE,
+			'delete_site_options'    => WP_REST_Server::DELETABLE,
+			'delete_site_widgets'    => WP_REST_Server::DELETABLE,
+			'delete_site_content'    => WP_REST_Server::READABLE,
+		];
+
+		if ( ! isset( $steps_and_methods[ $step ] ) || $steps_and_methods[ $step ] !== $method ) {
+			return new WP_Error( 'invalid_request', __( 'Invalid request.', 'demo-importer-plus' ) );
+		}
 
 		$cleanup = new PreviousSiteCleanup();
 

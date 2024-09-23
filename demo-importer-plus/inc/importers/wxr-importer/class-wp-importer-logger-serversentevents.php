@@ -22,9 +22,9 @@ if ( ! class_exists( 'WP_Importer_Logger_ServerSentEvents' ) && class_exists( 'W
 		/**
 		 * Logs with an arbitrary level.
 		 *
-		 * @param mixed $level Log level.
+		 * @param mixed  $level Log level.
 		 * @param string $message Log message.
-		 * @param array $context Log context.
+		 * @param array  $context Log context.
 		 *
 		 * @return void
 		 */
@@ -41,8 +41,8 @@ if ( ! class_exists( 'WP_Importer_Logger_ServerSentEvents' ) && class_exists( 'W
 				case 'notice':
 				case 'info':
 					if ( defined( 'WP_CLI' ) ) {
-						if ( isset( $data[ 'message' ] ) && ! empty( $data[ 'message' ] ) ) {
-							WP_CLI::line( $data[ 'message' ] );
+						if ( isset( $data['message'] ) && ! empty( $data['message'] ) ) {
+							WP_CLI::line( $data['message'] );
 						} else {
 							WP_CLI::line( wp_json_encode( $data ) );
 						}
@@ -53,11 +53,12 @@ if ( ! class_exists( 'WP_Importer_Logger_ServerSentEvents' ) && class_exists( 'W
 					}
 					flush();
 					break;
+
 				case 'debug':
 					if ( defined( 'IMPORT_DEBUG' ) && IMPORT_DEBUG ) {
 						if ( defined( 'WP_CLI' ) ) {
-							if ( isset( $data[ 'message' ] ) && ! empty( $data[ 'message' ] ) ) {
-								WP_CLI::line( $data[ 'message' ] );
+							if ( isset( $data['message'] ) && ! empty( $data['message'] ) ) {
+								WP_CLI::line( $data['message'] );
 							} else {
 								WP_CLI::line( wp_json_encode( $data ) );
 							}

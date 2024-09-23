@@ -101,6 +101,7 @@ class WXRImporter extends EventStream {
 
 			$this->set_importer();
 
+
 			$information = $this->importer->get_preliminary_information( $results[ 'file' ] );
 
 			$results[ '__meta' ] = array(

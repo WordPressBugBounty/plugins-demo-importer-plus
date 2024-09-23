@@ -32,7 +32,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * System is unusable.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -47,7 +47,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * trigger the SMS alerts and wake you up.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -61,7 +61,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * Example: Application component unavailable, unexpected exception.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -74,7 +74,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * be logged and monitored.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -89,7 +89,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * that are not necessarily wrong.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -101,7 +101,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * Normal but significant events.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -115,7 +115,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * Example: User logs in, SQL logs.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -127,7 +127,7 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		 * Detailed debug information.
 		 *
 		 * @param string $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return null
 		 */
@@ -138,9 +138,9 @@ if ( ! class_exists( 'WP_Importer_Logger' ) ) :
 		/**
 		 * Logs with an arbitrary level.
 		 *
-		 * @param mixed $level Error level.
+		 * @param mixed  $level Error level.
 		 * @param mixed $message Error message.
-		 * @param array $context Error context.
+		 * @param array  $context Error context.
 		 *
 		 * @return void
 		 */

@@ -56,14 +56,8 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue' ), 99 );
 
 
-			add_action( 'wp_ajax_demo_importer_plus', array(
-				\KraftPlugins\DemoImporterPlus\Ajax::class,
-				'handle_request',
-			) );
-			add_action( 'wp_ajax_nopriv_demo_importer_plus', array(
-				\KraftPlugins\DemoImporterPlus\Ajax::class,
-				'handle_request',
-			) );
+			add_action( 'wp_ajax_demo_importer_plus', array( \KraftPlugins\DemoImporterPlus\Ajax::class, 'handle_request' ) );
+			add_action( 'wp_ajax_nopriv_demo_importer_plus', array( \KraftPlugins\DemoImporterPlus\Ajax::class, 'handle_request' ) );
 		}
 
 		/**
@@ -76,7 +70,7 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 		/**
 		 * Enqueue admin scripts.
 		 *
-		 * @param string $hook Current hook name.
+		 * @param  string $hook Current hook name.
 		 *
 		 * @return void
 		 */
@@ -92,21 +86,14 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 			global $is_IE, $is_edge;
 
 			if ( $is_IE || $is_edge ) {
-				wp_enqueue_script( 'demo-importer-plus-eventsource', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/eventsource.min.js', array(
-					'jquery',
-					'wp-util',
-					'updates',
-				),                 DEMO_IMPORTER_PLUS_VER, true );
+				wp_enqueue_script( 'demo-importer-plus-eventsource', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/eventsource.min.js', array( 'jquery', 'wp-util', 'updates' ), DEMO_IMPORTER_PLUS_VER, true );
 			}
 
 			// Fetch.
 			wp_register_script( 'demo-importer-plus-fetch', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/fetch.umd.js', array( 'jquery' ), DEMO_IMPORTER_PLUS_VER, true );
 
 			// API.
-			wp_register_script( 'demo-importer-plus-api', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/demo-importer-plus-api.js', array(
-				'jquery',
-				'demo-importer-plus-fetch',
-			),                  DEMO_IMPORTER_PLUS_VER, true );
+			wp_register_script( 'demo-importer-plus-api', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/demo-importer-plus-api.js', array( 'jquery', 'demo-importer-plus-fetch' ), DEMO_IMPORTER_PLUS_VER, true );
 
 			// Admin Page.
 			wp_enqueue_style( 'demo-importer-plus-admin', DEMO_IMPORTER_PLUS_URI . "assets/admin/{$dist}css/demo-importer-plus-admin{$version}{$min}.css", DEMO_IMPORTER_PLUS_VER, true );
@@ -115,14 +102,7 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 
 			wp_enqueue_script( 'infinite-scroll', 'https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.js', [], '4.1.0', true );
 
-			wp_register_script( 'demo-importer-plus-admin-page', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/demo-importer-plus-admin.js', array(
-				'jquery',
-				'wp-util',
-				'updates',
-				'jquery-ui-autocomplete',
-				'demo-importer-plus-api',
-				'infinite-scroll',
-			),                  DEMO_IMPORTER_PLUS_VER, true );
+			wp_register_script( 'demo-importer-plus-admin-page', DEMO_IMPORTER_PLUS_URI . 'assets/admin/js/demo-importer-plus-admin.js', array( 'jquery', 'wp-util', 'updates', 'jquery-ui-autocomplete', 'demo-importer-plus-api', 'infinite-scroll' ), DEMO_IMPORTER_PLUS_VER, true );
 
 			$data = $this->get_local_vars();
 
@@ -172,33 +152,33 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 					/* translators: %s is a documentation link. */
 					'importFailedRequiredPluginsMessage' => sprintf( __( '<p>Your website is facing a temporary issue in connecting the template server.</p><p>Read <a href="%s" target="_blank">article</a> to resolve the issue and continue importing template.</p>', 'demo-importer-plus' ), esc_url( 'https://rishitheme.com/docs/how-to-resolve-demo-import-issue/' ) ),
 
-					'strings'                    => array(
+					'strings'                            => array(
 						/* translators: %s are white label strings. */
 						'warningBeforeCloseWindow' => __( 'Warning! Import process is not complete. Don\'t close the window until import process complete. Do you still want to leave the window?', 'demo-importer-plus' ),
 						'viewSite'                 => __( 'Done! View Site', 'demo-importer-plus' ),
 						/* translators: %s is a template name */
 						'importSingleTemplate'     => __( 'Import "%s" Template', 'demo-importer-plus' ),
 					),
-					'log'                        => array(
+					'log'                                => array(
 						'bulkInstall'  => __( 'Installing Required Plugins..', 'demo-importer-plus' ),
 						/* translators: %s are white label strings. */
 						'themeInstall' => __( 'Installing Theme..', 'demo-importer-plus' ),
 					),
-					'default_page_builder'       => $default_page_builder,
-					'default_page_builder_sites' => [],
-					'demoAPIURL'                 => DEMO_IMPORTER_PLUS_MAIN_DEMO_URI,
-					'allowedDemos'               => DEMO_IMPORTER_PLUS_MAIN_DEMO_ID,
-					'categories'                 => array(),
-					'page-builders'              => array(),
+					'default_page_builder'               => $default_page_builder,
+					'default_page_builder_sites'         => [],
+					'demoAPIURL'                         => DEMO_IMPORTER_PLUS_MAIN_DEMO_URI,
+					'allowedDemos'					   	 => DEMO_IMPORTER_PLUS_MAIN_DEMO_ID,
+					'categories'                         => array(),
+					'page-builders'                      => array(),
 
-					'ApiURL'               => $this->api_url,
-					'category_slug'        => 'demo-importer-plus-category',
-					'page_builder'         => 'demo-importer-plus-page-builder',
-					'cpt_slug'             => 'demo-importer-plus',
-					'dismiss'              => __( 'Dismiss this notice.', 'demo-importer-plus' ),
-					'compatibilities'      => $this->get_compatibilities(),
-					'compatibilities_data' => $this->get_compatibilities_data(),
-					'headings'             => array(
+					'ApiURL'                             => $this->api_url,
+					'category_slug'                      => 'demo-importer-plus-category',
+					'page_builder'                       => 'demo-importer-plus-page-builder',
+					'cpt_slug'                           => 'demo-importer-plus',
+					'dismiss'                            => __( 'Dismiss this notice.', 'demo-importer-plus' ),
+					'compatibilities'                    => $this->get_compatibilities(),
+					'compatibilities_data'               => $this->get_compatibilities_data(),
+					'headings'                           => array(
 						'subscription' => esc_html__( 'One Last Step..', 'demo-importer-plus' ),
 						'site_import'  => esc_html__( 'Your Selected Website is Being Imported.', 'demo-importer-plus' ),
 						'page_import'  => esc_html__( 'Your Selected Template is Being Imported.', 'demo-importer-plus' ),
@@ -285,15 +265,15 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 			);
 
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				$compatibilities[ 'warnings' ][ 'wp-debug' ] = $data[ 'wp-debug' ];
+				$compatibilities['warnings']['wp-debug'] = $data['wp-debug'];
 			}
 
 			if ( ! class_exists( 'XMLReader' ) ) {
-				$compatibilities[ 'errors' ][ 'xmlreader' ] = $data[ 'xmlreader' ];
+				$compatibilities['errors']['xmlreader'] = $data['xmlreader'];
 			}
 
 			if ( ! function_exists( 'curl_version' ) ) {
-				$compatibilities[ 'errors' ][ 'curl' ] = $data[ 'curl' ];
+				$compatibilities['errors']['curl'] = $data['curl'];
 			}
 
 			return $compatibilities;
@@ -316,19 +296,19 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 			if ( ! empty( $file ) ) {
 
 				preg_match( '/[^\?]+\.(jpe?g|jpe|svg|gif|png)\b/i', $file, $matches );
-				$file_array           = array();
-				$file_array[ 'name' ] = basename( $matches[ 0 ] );
+				$file_array         = array();
+				$file_array['name'] = basename( $matches[0] );
 
-				$file_array[ 'tmp_name' ] = download_url( $file );
+				$file_array['tmp_name'] = download_url( $file );
 
-				if ( is_wp_error( $file_array[ 'tmp_name' ] ) ) {
-					return $file_array[ 'tmp_name' ];
+				if ( is_wp_error( $file_array['tmp_name'] ) ) {
+					return $file_array['tmp_name'];
 				}
 
 				$id = media_handle_sideload( $file_array, 0 );
 
 				if ( is_wp_error( $id ) ) {
-					unlink( $file_array[ 'tmp_name' ] );
+					unlink( $file_array['tmp_name'] );
 
 					return $id;
 				}
@@ -337,8 +317,8 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 				$data->attachment_id = $id;
 				$data->url           = wp_get_attachment_url( $id );
 				$data->thumbnail_url = wp_get_attachment_thumb_url( $id );
-				$data->height        = isset( $meta[ 'height' ] ) ? $meta[ 'height' ] : '';
-				$data->width         = isset( $meta[ 'width' ] ) ? $meta[ 'width' ] : '';
+				$data->height        = isset( $meta['height'] ) ? $meta['height'] : '';
+				$data->width         = isset( $meta['width'] ) ? $meta['width'] : '';
 			}
 
 			return $data;
@@ -350,10 +330,7 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 		public function add_admin_menu() {
 			$page_title = apply_filters( 'Demo_Importer_Plus_menu_page_title', esc_html__( 'Demo Importer Plus', 'demo-importer-plus' ) );
 
-			$page = add_theme_page( $page_title, $page_title, 'manage_options', 'demo-importer-plus', array(
-				$this,
-				'menu_callback',
-			) );
+			$page = add_theme_page( $page_title, $page_title, 'manage_options', 'demo-importer-plus', array( $this, 'menu_callback' ) );
 		}
 
 		/**
@@ -403,11 +380,11 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 		/**
 		 * Get Page Builders Images
 		 *
-		 * @param string $slug Page Builder Slug.
+		 * @param  string $slug Page Builder Slug.
 		 *
 		 * @return array page builders.
 		 */
-		public function get_page_builder_image( $slug ) {
+		public function get_page_builder_image ( $slug ) {
 
 			$image = '';
 
@@ -427,7 +404,7 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 		 * @param string $key Setting key.
 		 * @param mixed $defaults Setting value.
 		 */
-		public function get_setting( $key = '', $defaults = '' ) {
+		public function get_setting ( $key = '', $defaults = '' ) {
 
 			$settings = $this->get_settings();
 
@@ -447,7 +424,7 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 		 *
 		 * @return array Stored settings.
 		 */
-		public function get_settings() {
+		public function get_settings () {
 
 			$defaults = array(
 				'page_builder' => 'elementor',
@@ -463,8 +440,8 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 		 *
 		 * @param string $default_page_builder default page builder slug.
 		 */
-		public function get_sites_by_page_builder( $default_page_builder = 'elementor' ) {
-			$sites_and_pages            = $this->get_all_sites();
+		public function get_sites_by_page_builder ( $default_page_builder = 'elementor' ) {
+			$sites_and_pages = $this->get_all_sites();
 			$current_page_builder_sites = array_filter(
 				$sites_and_pages,
 				function ( $site ) use ( $default_page_builder ) {
@@ -503,18 +480,18 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 
 			if ( ! is_wp_error( $sites_and_pages ) ) {
 				$sites_and_pages = json_decode( wp_remote_retrieve_body( $sites_and_pages ), true );
-				$sites_pages     = isset( $sites_and_pages[ 'data' ] ) ? $sites_and_pages[ 'data' ] : array();
+				$sites_pages     = isset( $sites_and_pages['data'] ) ? $sites_and_pages['data'] : array();
 
 				if ( ! empty( $sites_pages ) ) {
 					foreach ( $sites_pages as $site_id => $site ) {
 						if ( empty( $allowed_sites ) ) {
-							$site[ 'order' ]                  = $site_id;
-							$all_sites_pages[ $site[ 'id' ] ] = $site;
+							$site['order']                  = $site_id;
+							$all_sites_pages[ $site['id'] ] = $site;
 						} else {
 							foreach ( $allowed_sites as $key => $value ) {
-								if ( $value == $site[ 'id' ] ) {
-									$site[ 'order' ]                  = $key;
-									$all_sites_pages[ $site[ 'id' ] ] = $site;
+								if ( $value == $site['id'] ) {
+									$site['order']                  = $key;
+									$all_sites_pages[ $site['id'] ] = $site;
 								}
 							}
 						}
@@ -523,12 +500,12 @@ if ( ! class_exists( 'Demo_Importer_Plus' ) ) {
 				usort(
 					$all_sites_pages,
 					function ( $a, $b ) {
-						return $a[ 'order' ] - $b[ 'order' ];
+						return $a['order'] - $b['order'];
 					}
 				);
 
 				foreach ( $all_sites_pages as $key => $sorted_site ) {
-					$sorted_sites[ $sorted_site[ 'id' ] ] = $sorted_site;
+					$sorted_sites[ $sorted_site['id'] ] = $sorted_site;
 				}
 
 				if ( ! empty( $sorted_sites ) ) {
