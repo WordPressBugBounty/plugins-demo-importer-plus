@@ -7,6 +7,10 @@ namespace Composer\Autoload;
 class ComposerStaticInitf035a643c69cde29e6a6ca28f50ffecc
 {
     public static $prefixLengthsPsr4 = array (
+        'e' => 
+        array (
+            'enshrined\\svgSanitize\\' => 22,
+        ),
         'K' => 
         array (
             'KraftPlugins\\DemoImporterPlus\\' => 30,
@@ -14,6 +18,10 @@ class ComposerStaticInitf035a643c69cde29e6a6ca28f50ffecc
     );
 
     public static $prefixDirsPsr4 = array (
+        'enshrined\\svgSanitize\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/enshrined/svg-sanitize/src',
+        ),
         'KraftPlugins\\DemoImporterPlus\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc',

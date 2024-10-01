@@ -6,6 +6,8 @@
  * @package Demo Importer Plus Addon
  */
 
+use enshrined\svgSanitize\Sanitizer;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -57,6 +59,7 @@ class Demo_Importer_Plus_WXR_Importer {
 		require_once DEMO_IMPORTER_PLUS_DIR . 'inc/importers/wxr-importer/class-wxr-import-info.php';
 
 		add_filter( 'upload_mimes', array( $this, 'custom_upload_mimes' ) );
+		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sanitize_svg_files' ) );
 		add_action( 'wp_ajax_demo-importer-plus-wxr-import', array( $this, 'sse_import' ) );
 		add_filter( 'wxr_importer.pre_process.user', '__return_null' );
 		add_filter( 'wp_import_post_data_processed', array( $this, 'pre_post_data' ), 10, 2 );
@@ -67,6 +70,29 @@ class Demo_Importer_Plus_WXR_Importer {
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'real_mime_types' ), 10, 4 );
 		}
 
+	}
+
+	/**
+	 * Sanitize SVG files.
+	 *
+	 * @param array $file File data.
+	 *
+	 * @return array
+	 * @since 2.0.2
+	 */
+	public function sanitize_svg_files( array $file ): array {
+		if ( $file[ 'type' ] == 'image/svg+xml' ) {
+			$sanitizer    = new Sanitizer();
+			$sanitizedSvg = $sanitizer->sanitize( file_get_contents( $file[ 'tmp_name' ] ) );
+
+			if ( $sanitizedSvg ) {
+				file_put_contents( $file[ 'tmp_name' ], $sanitizedSvg );
+			} else {
+				return array( 'error' => 'Invalid SVG file.' );
+			}
+		}
+
+		return $file;
 	}
 
 	/**

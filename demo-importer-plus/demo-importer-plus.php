@@ -7,7 +7,7 @@
  * Author URI:      https://kraftplugins.com/
  * Text Domain:     demo-importer-plus
  * Domain Path:     /languages
- * Version:         2.0.1
+ * Version:         2.0.2
  * Tested up to:    6.6
  *
  * @package         Demo Importer Plus
@@ -16,40 +16,40 @@
 /**
  * Set constants.
  */
-if ( !defined( 'DEMO_IMPORTER_PLUS_NAME' ) ) {
+if ( ! defined( 'DEMO_IMPORTER_PLUS_NAME' ) ) {
 	define( 'DEMO_IMPORTER_PLUS_NAME', __( 'Demo Importer Plus', 'demo-importer-plus' ) );
 }
 
-if ( !defined( 'DEMO_IMPORTER_PLUS_VER' ) ) {
-	define( 'DEMO_IMPORTER_PLUS_VER', '2.0.1' );
+if ( ! defined( 'DEMO_IMPORTER_PLUS_VER' ) ) {
+	define( 'DEMO_IMPORTER_PLUS_VER', '2.0.2' );
 }
 
-if ( !defined( 'DEMO_IMPORTER_PLUS_FILE' ) ) {
+if ( ! defined( 'DEMO_IMPORTER_PLUS_FILE' ) ) {
 	define( 'DEMO_IMPORTER_PLUS_FILE', __FILE__ );
 }
 
-if ( !defined( 'DEMO_IMPORTER_PLUS_BASE' ) ) {
+if ( ! defined( 'DEMO_IMPORTER_PLUS_BASE' ) ) {
 	define( 'DEMO_IMPORTER_PLUS_BASE', plugin_basename( DEMO_IMPORTER_PLUS_FILE ) );
 }
 
-if ( !defined( 'DEMO_IMPORTER_PLUS_DIR' ) ) {
+if ( ! defined( 'DEMO_IMPORTER_PLUS_DIR' ) ) {
 	define( 'DEMO_IMPORTER_PLUS_DIR', plugin_dir_path( DEMO_IMPORTER_PLUS_FILE ) );
 }
 
-if ( !defined( 'DEMO_IMPORTER_PLUS_URI' ) ) {
+if ( ! defined( 'DEMO_IMPORTER_PLUS_URI' ) ) {
 	define( 'DEMO_IMPORTER_PLUS_URI', plugins_url( '/', DEMO_IMPORTER_PLUS_FILE ) );
 }
 
 require __DIR__ . '/vendor/autoload.php';
 
-if ( !function_exists( 'demo_importer_plus_setup' ) ) :
+if ( ! function_exists( 'demo_importer_plus_setup' ) ) :
 
 	/**
 	 * DEMO Importer plus Setup
 	 *
 	 * @since 1.0.0
 	 */
-	function demo_importer_plus_setup () {
+	function demo_importer_plus_setup() {
 		require_once DEMO_IMPORTER_PLUS_DIR . 'inc/constants.php';
 		require_once DEMO_IMPORTER_PLUS_DIR . 'inc/functions.php';
 		require_once DEMO_IMPORTER_PLUS_DIR . 'inc/classes/class-demo-importer-plus.php';
