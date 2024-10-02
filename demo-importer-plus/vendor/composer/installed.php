@@ -1,13 +1,13 @@
 <?php return array(
     'root' => array(
         'name' => 'kraftplugins/demo-importer-plus',
-        'pretty_version' => 'dev-next',
-        'version' => 'dev-next',
-        'reference' => '20a201e755cec5575c97c0529df10df88f42909f',
+        'pretty_version' => 'v2.0.3',
+        'version' => '2.0.3.0',
+        'reference' => '4e799c5a7463e24360b120fd3b50d9512d368a7c',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
         'enshrined/svg-sanitize' => array(
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'kraftplugins/demo-importer-plus' => array(
-            'pretty_version' => 'dev-next',
-            'version' => 'dev-next',
-            'reference' => '20a201e755cec5575c97c0529df10df88f42909f',
+            'pretty_version' => 'v2.0.3',
+            'version' => '2.0.3.0',
+            'reference' => '4e799c5a7463e24360b120fd3b50d9512d368a7c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

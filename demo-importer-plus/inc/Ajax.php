@@ -96,7 +96,7 @@ class Ajax {
 					if ( ! current_user_can( 'manage_options' ) ) {
 						$data = new WP_Error( 'permission_denied', 'You do not have permission to delete site.', 403 );
 					} else {
-					$data = static::cleanup_previous_site( $request );
+						$data = static::cleanup_previous_site( $request );
 					}
 					break;
 				default:
@@ -208,10 +208,10 @@ class Ajax {
 
 		$steps_and_methods = [
 			'prepare'                => WP_REST_Server::READABLE,
-			'reset'                  => WP_REST_Server::DELETABLE,
-			'delete_site_customizer' => WP_REST_Server::DELETABLE,
-			'delete_site_options'    => WP_REST_Server::DELETABLE,
-			'delete_site_widgets'    => WP_REST_Server::DELETABLE,
+			'reset'                  => WP_REST_Server::CREATABLE,
+			'delete_site_customizer' => WP_REST_Server::CREATABLE,
+			'delete_site_options'    => WP_REST_Server::CREATABLE,
+			'delete_site_widgets'    => WP_REST_Server::CREATABLE,
 			'delete_site_content'    => WP_REST_Server::READABLE,
 		];
 
