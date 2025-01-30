@@ -40,6 +40,34 @@ class DemoServer {
 		return demo_importer_plus_get_unique_key( $input, 'dipa_cache' );
 	}
 
+	public static function remote_get( $url ) {
+		$ch = curl_init(); // Initialize cURL session
+
+		// Set cURL options
+		curl_setopt( $ch, CURLOPT_URL, $url );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch, CURLOPT_TIMEOUT, 60 ); // Timeout in seconds
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true ); // Follow redirects if any
+
+		$response = curl_exec( $ch ); // Execute the request
+		$http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE ); // Get HTTP status code
+
+		if ( curl_errno( $ch ) ) {
+			// Handle cURL error
+			$error_msg = curl_error( $ch );
+			curl_close( $ch );
+			return new WP_Error( 'curl_error', $error_msg );
+		}
+
+		curl_close( $ch ); // Close the cURL session
+
+		// Return response
+		return [
+			'body' => $response,
+			'response' => [ 'code' => $http_code ]
+		];
+	}
+
 	/**
 	 * Fetch from URL.
 	 *
@@ -53,7 +81,7 @@ class DemoServer {
 		$data = $cache ? get_transient( $cache_key ) : false;
 
 		if ( ! $data ) {
-			$response = wp_remote_get( $url );
+			$response = static::remote_get( $url );
 
 			if ( is_wp_error( $response ) ) {
 				return $response;

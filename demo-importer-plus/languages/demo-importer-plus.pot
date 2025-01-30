@@ -1,15 +1,15 @@
-# Copyright (C) 2024 kraftplugins
+# Copyright (C) 2025 kraftplugins
 # This file is distributed under the same license as the Demo Importer Plus package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Demo Importer Plus 2.0.3\n"
+"Project-Id-Version: Demo Importer Plus 2.0.4\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/demo-importer-plus\n"
-"POT-Creation-Date: 2024-10-02 12:28:19+00:00\n"
+"POT-Creation-Date: 2025-01-30 05:44:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -64,11 +64,11 @@ msgstr ""
 msgid "Plugin \"%s\" is Activated"
 msgstr ""
 
-#: inc/DemoServer.php:243
+#: inc/DemoServer.php:271
 msgid "Invalid response code from server"
 msgstr ""
 
-#: inc/DemoServer.php:250
+#: inc/DemoServer.php:278
 msgid "Server connection successful."
 msgstr ""
 
