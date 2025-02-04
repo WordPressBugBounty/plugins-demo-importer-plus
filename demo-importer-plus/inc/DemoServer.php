@@ -259,13 +259,13 @@ class DemoServer {
 	public function test_connection() {
 		$url = static::$url . static::namespace;
 
-		$response = wp_remote_get( $url );
+		$response = static::remote_get( $url );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 
-		$response_code = wp_remote_retrieve_response_code( $response );
+		$response_code = $response['response']['code'] ?? 404;
 
 		if ( 200 !== $response_code ) {
 			return new WP_Error( 'invalid_response_code', __( 'Invalid response code from server', 'demo-importer-plus' ), $response );
