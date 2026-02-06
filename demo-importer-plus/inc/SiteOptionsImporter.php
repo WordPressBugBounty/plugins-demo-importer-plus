@@ -255,6 +255,11 @@ class SiteOptionsImporter {
 						}
 						break;
 
+				case 'wp_travel_engine_settings':
+					$this->import_wte_settings_with_remapping( $option_value );
+					break;
+
+
 					default:
 						update_option( $option_name, $option_value );
 						break;
@@ -277,6 +282,31 @@ class SiteOptionsImporter {
 	 * @return array
 	 * @since 2.0.0
 	 */
+	/**
+	 * Import WP Travel Engine settings with page ID remapping.
+	 *
+	 * @param array $settings WTE settings array.
+	 * @return void
+	 * @since 2.0.7
+	 */
+	private function import_wte_settings_with_remapping( $settings ) {
+		// Get post ID mappings
+		$post_mappings = get_option( '_demo_importer_posts_mapping', array() );
+		$page_mappings = isset( $post_mappings['page'] ) ? $post_mappings['page'] : array();
+
+		// Remap page IDs in WTE settings
+		if ( isset( $settings['pages'] ) && is_array( $settings['pages'] ) && ! empty( $page_mappings ) ) {
+			foreach ( $settings['pages'] as $key => $old_page_id ) {
+				if ( isset( $page_mappings[ $old_page_id ] ) ) {
+					$settings['pages'][ $key ] = $page_mappings[ $old_page_id ];
+					\Demo_Importer_Plus_Sites_Importer_Log::add( 'WTE Page Remapped: ' . $key . ' from ID ' . $old_page_id . ' to ID ' . $page_mappings[ $old_page_id ] );
+				}
+			}
+		}
+
+		update_option( 'wp_travel_engine_settings', $settings );
+	}
+
 	public function cleanup(): array {
 		$cache_option_names = get_option( static::$cache_option_name, array() );
 

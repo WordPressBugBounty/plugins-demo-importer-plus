@@ -97,7 +97,8 @@ class DemoServer {
 		}
 
 		try {
-			$data = json_decode( $data, true );
+            $data = preg_replace('/^\xEF\xBB\xBF/', '', $data); // strip UTF-8 BOM if present
+            $data = json_decode($data, true);
 		} catch ( \Exception $e ) {
 			$data = array();
 		}

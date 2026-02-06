@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'kraftplugins/demo-importer-plus',
-        'pretty_version' => 'v2.0.5',
-        'version' => '2.0.5.0',
-        'reference' => 'a216586e4d8b9fe7be7a8455440db281fc869def',
+        'pretty_version' => 'v2.0.10',
+        'version' => '2.0.10.0',
+        'reference' => '55dcfdd3f5378c5cf1cf1f9caa560e8720a0bc77',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'kraftplugins/demo-importer-plus' => array(
-            'pretty_version' => 'v2.0.5',
-            'version' => '2.0.5.0',
-            'reference' => 'a216586e4d8b9fe7be7a8455440db281fc869def',
+            'pretty_version' => 'v2.0.10',
+            'version' => '2.0.10.0',
+            'reference' => '55dcfdd3f5378c5cf1cf1f9caa560e8720a0bc77',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

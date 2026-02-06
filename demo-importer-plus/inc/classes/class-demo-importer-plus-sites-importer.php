@@ -492,8 +492,9 @@ if ( !class_exists( 'Demo_Importer_Site_Importer' ) ) {
 				$rows = $wpdb->get_results( $query );
 				if ( $rows ) {
 					foreach ( $rows as $row ) {
-						if ( !empty( $media_ids[ $row->term_id ] ) ) {
-							update_term_meta( $row->term_id, 'category-image-id', $media_ids[ $row->term_id ] );
+					// Use meta_value (old attachment ID) as key to get new attachment ID from mapping
+						if ( !empty( $media_ids[ $row->meta_value ] ) ) {
+							update_term_meta( $row->term_id, 'category-image-id', $media_ids[ $row->meta_value ] );
 						}
 					}
 				}

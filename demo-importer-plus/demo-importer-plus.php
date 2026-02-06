@@ -7,8 +7,8 @@
  * Author URI:      https://kraftplugins.com/
  * Text Domain:     demo-importer-plus
  * Domain Path:     /languages
- * Version:         2.0.5
- * Tested up to:    6.7
+ * Version:         2.0.10
+ * Tested up to:    6.8
  *
  * @package         Demo Importer Plus
  */
@@ -17,11 +17,11 @@
  * Set constants.
  */
 if ( ! defined( 'DEMO_IMPORTER_PLUS_NAME' ) ) {
-	define( 'DEMO_IMPORTER_PLUS_NAME', __( 'Demo Importer Plus', 'demo-importer-plus' ) );
+	define( 'DEMO_IMPORTER_PLUS_NAME', 'Demo Importer Plus' );
 }
 
 if ( ! defined( 'DEMO_IMPORTER_PLUS_VER' ) ) {
-	define( 'DEMO_IMPORTER_PLUS_VER', '2.0.5' );
+	define( 'DEMO_IMPORTER_PLUS_VER', '2.0.10' );
 }
 
 if ( ! defined( 'DEMO_IMPORTER_PLUS_FILE' ) ) {

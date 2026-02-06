@@ -57,14 +57,20 @@ class Ajax {
 					break;
 					break;
 				case 'import-demo':
-					if ( $request->get_param( 'id' ) ) {
+					if ( ! current_user_can( 'import' ) || ! current_user_can( 'manage_options' ) ) {
+						$data = new WP_Error( 'permission_denied', 'You do not have permission to import demo sites.', 403 );
+					} else if ( $request->get_param( 'id' ) ) {
 						$data = static::import_demo_site( $request );
 					} else {
 						$data = new WP_Error( 'invalid_request', 'Requires Demo ID.' );
 					}
 					break;
 				case 'update_attachment':
-					$data = static::update_attachment( $request );
+					if ( ! current_user_can( 'upload_files' ) ) {
+						$data = new WP_Error( 'permission_denied', 'You do not have permission to update attachments.', 403 );
+					} else {
+						$data = static::update_attachment( $request );
+					}
 					break;
 				case 'required-plugins':
 					if ( $request->get_param( 'id' ) ) {
@@ -74,14 +80,20 @@ class Ajax {
 					}
 					break;
 				case 'import-page':
-					if ( $request->get_param( 'id' ) && $request->get_param( 'page_id' ) ) {
+					if ( ! current_user_can( 'import' ) || ! current_user_can( 'manage_options' ) ) {
+						$data = new WP_Error( 'permission_denied', 'You do not have permission to import pages.', 403 );
+					} else if ( $request->get_param( 'id' ) && $request->get_param( 'page_id' ) ) {
 						$data = static::import_page( $request );
 					} else {
 						$data = new WP_Error( 'invalid_request', 'Invalid Page ID and Demo ID.' );
 					}
 					break;
 				case 'do-reinstall':
-					$data = static::do_reinstall( $request );
+					if ( ! current_user_can( 'manage_options' ) ) {
+						$data = new WP_Error( 'permission_denied', 'You do not have permission to reset site.', 403 );
+					} else {
+						$data = static::do_reinstall( $request );
+					}
 					break;
 				case 'activate-plugin':
 					if ( ! current_user_can( 'activate_plugins' ) ) {

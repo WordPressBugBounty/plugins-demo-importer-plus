@@ -3,9 +3,9 @@ Contributors: kraftplugins
 Donate link: https://kraftplugins.com/
 Tags: elementor, one click demo import, templates, themes, import
 Requires at least: 4.7
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.0.5
+Stable tag: 2.0.10
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,6 +20,22 @@ In addition to this, you can also import a single page template on your existing
 You can import the starter sites via Appearance > Demo Importer Plus.
 
 == Changelog ==
+== 2.0.10 ==
+* Fix critical security vulnerability
+
+== 2.0.9 == 
+* Fix critical security vulnerability - Add authorization checks
+
+== 2.0.8 ==
+* Fix: Issue of svg not importing properly has been solved.
+
+== 2.0.7 ==
+* Fix arbitrary file upload vulnerability in WXR importer.
+
+== 2.0.6 ==
+* Fix: Templates list not showing due to json_decode issue has been solved.
+* Fix: Warning shown due to translation loading early has been solved.
+
 == 2.0.5 ==
 * Fix: Add custom remote request method with enhanced cURL handling.
 

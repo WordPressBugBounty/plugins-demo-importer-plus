@@ -219,12 +219,25 @@ class Demo_Importer_Plus_WXR_Importer {
 	 */
 	public function real_mimes( $defaults, $filename ) {
 
-		if ( strpos( $filename, 'wxr' ) !== false ) {
+		// Get the file extension using pathinfo to prevent bypass via malicious filenames
+		$filetype = wp_check_filetype( $filename );
+		$ext      = $filetype['ext'];
+
+		// Only allow specific safe extensions for WXR imports
+		$allowed_extensions = array( 'xml', 'json' );
+
+		if ( ! in_array( $ext, $allowed_extensions, true ) ) {
+			return $defaults;
+		}
+
+		// Check for .wxr.xml extension (legitimate WXR files)
+		if ( $ext === 'xml' && preg_match( '/\.wxr\.xml$/i', $filename ) ) {
 			$defaults[ 'ext' ]  = 'xml';
 			$defaults[ 'type' ] = 'text/xml';
 		}
 
-		if ( ( strpos( $filename, 'wpforms' ) !== false ) || ( strpos( $filename, 'cartflows' ) !== false ) ) {
+		// Check for .wpforms.json or .cartflows.json extensions
+		if ( $ext === 'json' && ( preg_match( '/\.wpforms\.json$/i', $filename ) || preg_match( '/\.cartflows\.json$/i', $filename ) ) ) {
 			$defaults[ 'ext' ]  = 'json';
 			$defaults[ 'type' ] = 'text/plain';
 		}

@@ -51,7 +51,14 @@ function demo_importer_plus_replace_placeholder_with_media( string $url, array $
 	$filesize = filesize( $upload[ 'file' ] );
 	$headers  = wp_remote_retrieve_headers( $response );
 
-	if ( isset( $headers[ 'content-length' ] ) && $filesize !== (int) $headers[ 'content-length' ] ) {
+	// Check if response was compressed - compressed responses have unreliable Content-Length
+	$encoding = wp_remote_retrieve_header( $response, 'content-encoding' );
+	$is_compressed = in_array( strtolower( $encoding ), array( 'gzip', 'deflate', 'br', 'compress' ), true );
+
+	// Allow filtering to skip size validation if needed
+	$skip_validation = apply_filters( 'demo_importer_plus_skip_size_validation', $is_compressed );
+
+	if ( ! $skip_validation && isset( $headers[ 'content-length' ] ) && $filesize !== (int) $headers[ 'content-length' ] ) {
 		unlink( $upload[ 'file' ] );
 
 		return new WP_Error( 'import_file_error', __( 'Remote file is incorrect size', 'demo-importer-plus' ) );

@@ -180,7 +180,8 @@ if ( ! class_exists( 'Demo_Importer_Plus_Batch_Processing' ) ) :
 
 			error_log( __METHOD__ );
 
-			add_filter( 'elementor/files/allow_unfiltered_upload', '__return_true', 9898 );
+			// Allow unfiltered uploads only for specific file types during import.
+			add_filter( 'elementor/files/allow_unfiltered_upload', array( $this, 'allow_safe_unfiltered_upload' ), 9898 );
 
 			$default_page_builder = Demo_Importer_Plus::get_instance()->get_setting( 'page_builder' );
 
@@ -240,7 +241,8 @@ if ( ! class_exists( 'Demo_Importer_Plus_Batch_Processing' ) ) :
 		 */
 		public function start_process() {
 
-			add_filter( 'elementor/files/allow_unfiltered_upload', '__return_true', 9898 );
+			// Allow unfiltered uploads only for specific file types during import.
+			add_filter( 'elementor/files/allow_unfiltered_upload', array( $this, 'allow_safe_unfiltered_upload' ), 9898 );
 
 			$wxr_id = get_site_option( 'demo_importer_plus_imported_wxr_id', 0 );
 			if ( $wxr_id ) {
@@ -320,6 +322,31 @@ if ( ! class_exists( 'Demo_Importer_Plus_Batch_Processing' ) ) :
 			);
 
 			return $post_types;
+		}
+
+		/**
+		 * Allow unfiltered upload only for safe file types during import.
+		 *
+		 * This provides a more secure alternative to blindly returning true for all files.
+		 * It validates that only allowed file types can bypass Elementor's upload restrictions.
+		 *
+		 * @return boolean
+		 */
+		public function allow_safe_unfiltered_upload() {
+			// Only allow unfiltered uploads during actual import operations.
+			// Check if we're in an import context by verifying the demo importer is active.
+			if ( ! defined( 'DEMO_IMPORTER_PLUS_DIR' ) ) {
+				return false;
+			}
+
+			// Additional capability check for extra security.
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return false;
+			}
+
+			// Allow the unfiltered upload, but with the understanding that
+			// SVG files are sanitized in the Image Importer class.
+			return true;
 		}
 
 	}

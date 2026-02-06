@@ -85,15 +85,30 @@ if ( ! class_exists( 'Demo_Importer_Plus_Sites_Helper' ) ) :
 		 */
 		public static function get_svg_dimensions( $svg ) {
 
-			$svg = simplexml_load_file( $svg );
+			// Security: Use DOMDocument with disabled external entity loading to prevent XXE attacks.
+			$dom = new DOMDocument();
 
-			if ( false === $svg ) {
+			// Disable external entity loading and entity substitution.
+			$dom->resolveExternals   = false;
+			$dom->substituteEntities = false;
+
+			// Suppress warnings for malformed SVG files.
+			$previous_error_handler = libxml_use_internal_errors( true );
+
+			// Load SVG file with secure options.
+			$loaded = $dom->load( $svg, LIBXML_NONET | LIBXML_DTDLOAD | LIBXML_DTDATTR );
+
+			// Restore previous error handler.
+			libxml_clear_errors();
+			libxml_use_internal_errors( $previous_error_handler );
+
+			if ( false === $loaded ) {
 				$width  = '0';
 				$height = '0';
 			} else {
-				$attributes = $svg->attributes();
-				$width      = (string) $attributes->width;
-				$height     = (string) $attributes->height;
+				$svg_element = $dom->documentElement;
+				$width       = $svg_element->getAttribute( 'width' ) ?: '0';
+				$height      = $svg_element->getAttribute( 'height' ) ?: '0';
 			}
 
 			return (object) array(

@@ -98,6 +98,9 @@ class Demo_Importer_Plus_Batch_Processing_Elementor extends Source_Local {
 					$data = $document->get_elements_raw_data( $data, true );
 				}
 
+				// Download SVG icons from Elementor data.
+				$data = $this->download_elementor_svg_icons( $data );
+
 				$data = $this->process_export_import_content( $data, 'on_import' );
 
 				$demo_url = DEMO_IMPORTER_PLUS_MAIN_DEMO_URI;
@@ -122,4 +125,99 @@ class Demo_Importer_Plus_Batch_Processing_Elementor extends Source_Local {
 			}
 		}
 	}
+
+	/**
+	 * Download SVG icons from Elementor data.
+	 *
+	 * Recursively scans Elementor data for SVG icon URLs and downloads them.
+	 *
+	 * @param array $data Elementor data array.
+	 * @return array Modified Elementor data with local SVG URLs.
+	 */
+	private function download_elementor_svg_icons( $data ) {
+		if ( ! is_array( $data ) ) {
+			return $data;
+		}
+
+		foreach ( $data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				// Recursively process nested arrays
+				$data[ $key ] = $this->download_elementor_svg_icons( $value );
+			} elseif ( $key === 'selected_icon' && is_array( $value ) ) {
+				// Handle icon control with SVG
+				if ( isset( $value['library'] ) && $value['library'] === 'svg' && isset( $value['value']['url'] ) ) {
+					$svg_url = $value['value']['url'];
+					if ( $this->is_demo_site_url( $svg_url ) ) {
+						$downloaded_svg = $this->download_svg_file( $svg_url );
+						if ( ! is_wp_error( $downloaded_svg ) && isset( $downloaded_svg['url'] ) ) {
+							$data[ $key ]['value']['url'] = $downloaded_svg['url'];
+							if ( isset( $downloaded_svg['id'] ) ) {
+								$data[ $key ]['value']['id'] = $downloaded_svg['id'];
+							}
+						}
+					}
+				}
+			} elseif ( is_string( $value ) && $this->is_svg_url( $value ) && $this->is_demo_site_url( $value ) ) {
+				// Handle direct SVG URL strings
+				$downloaded_svg = $this->download_svg_file( $value );
+				if ( ! is_wp_error( $downloaded_svg ) && isset( $downloaded_svg['url'] ) ) {
+					$data[ $key ] = $downloaded_svg['url'];
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Check if URL is from demo site.
+	 *
+	 * @param string $url URL to check.
+	 * @return bool True if URL is from demo site.
+	 */
+	private function is_demo_site_url( $url ) {
+		$demo_url = DEMO_IMPORTER_PLUS_MAIN_DEMO_URI;
+		return strpos( $url, $demo_url ) !== false;
+	}
+
+	/**
+	 * Check if URL points to an SVG file.
+	 *
+	 * @param string $url URL to check.
+	 * @return bool True if URL ends with .svg or .svgz.
+	 */
+	private function is_svg_url( $url ) {
+		$url_lower = strtolower( $url );
+		return ( substr( $url_lower, -4 ) === '.svg' || substr( $url_lower, -5 ) === '.svgz' );
+	}
+
+	/**
+	 * Download SVG file and add to media library.
+	 *
+	 * @param string $svg_url SVG file URL.
+	 * @return array|\WP_Error Array with 'url' and 'id' on success, WP_Error on failure.
+	 */
+	private function download_svg_file( $svg_url ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		// Use the image importer class
+		$attachment = array(
+			'url' => $svg_url,
+			'id'  => 0,
+		);
+
+		$downloaded = \Demo_Importer_Plus_Sites_Image_Importer::get_instance()->import( $attachment );
+
+		if ( isset( $downloaded['id'] ) && $downloaded['id'] > 0 ) {
+			return array(
+				'id'  => $downloaded['id'],
+				'url' => $downloaded['url'],
+			);
+		}
+
+		return new \WP_Error( 'svg_download_failed', 'Failed to download SVG icon' );
+	}
+
 }

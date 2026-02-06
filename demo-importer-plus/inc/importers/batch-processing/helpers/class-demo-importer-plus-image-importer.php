@@ -61,6 +61,11 @@ if ( ! class_exists( 'Demo_Importer_Plus_Sites_Image_Importer' ) ) :
 			}
 
 			WP_Filesystem();
+
+			// Load SVG sanitizer if not already loaded.
+			if ( ! class_exists( 'enshrined\svgSanitize\Sanitizer' ) ) {
+				require_once DEMO_IMPORTER_PLUS_DIR . 'vendor/autoload.php';
+			}
 		}
 
 		/**
@@ -169,15 +174,22 @@ if ( ! class_exists( 'Demo_Importer_Plus_Sites_Image_Importer' ) ) :
 				return $saved_image['attachment'];
 			}
 
-			$file_content = wp_remote_retrieve_body(
-				wp_safe_remote_get(
-					$attachment['url'],
-					array(
-						'timeout'   => '60',
-						'sslverify' => false,
-					)
+			$response = wp_safe_remote_get(
+				$attachment['url'],
+				array(
+					'timeout'   => '60',
+					'sslverify' => false,
 				)
 			);
+
+			// Validate HTTP response.
+			$validation = $this->validate_http_response( $response );
+			if ( is_wp_error( $validation ) ) {
+				Demo_Importer_Plus_Sites_Importer_Log::add( 'BATCH - FAIL Image {Error: ' . $validation->get_error_message() . '} - ' . $attachment['url'] );
+				return $attachment;
+			}
+
+			$file_content = wp_remote_retrieve_body( $response );
 
 			if ( empty( $file_content ) ) {
 
@@ -186,6 +198,17 @@ if ( ! class_exists( 'Demo_Importer_Plus_Sites_Image_Importer' ) ) :
 			}
 
 			$filename = basename( $attachment['url'] );
+
+			// Sanitize SVG files before saving.
+			if ( $this->is_svg_file( $filename ) ) {
+				$sanitized_content = $this->sanitize_svg_content( $file_content );
+				if ( is_wp_error( $sanitized_content ) ) {
+					Demo_Importer_Plus_Sites_Importer_Log::add( 'BATCH - FAIL SVG {Error: ' . $sanitized_content->get_error_message() . '} - ' . $attachment['url'] );
+					return $attachment;
+				}
+				$file_content = $sanitized_content;
+				Demo_Importer_Plus_Sites_Importer_Log::add( 'BATCH - SVG Sanitized - ' . $attachment['url'] );
+			}
 
 			$upload = wp_upload_bits(
 				$filename,
@@ -246,6 +269,80 @@ if ( ! class_exists( 'Demo_Importer_Plus_Sites_Image_Importer' ) ) :
 			}
 
 			return false;
+		}
+
+		/**
+		 * Check if a file is an SVG
+		 *
+		 * @param string $filename File name or path.
+		 * @return boolean
+		 */
+		private function is_svg_file( $filename ) {
+			$extension = strtolower( pathinfo( $filename, PATHINFO_EXTENSION ) );
+			return in_array( $extension, array( 'svg', 'svgz' ), true );
+		}
+
+		/**
+		 * Sanitize SVG file content
+		 *
+		 * @param string $file_content SVG file content.
+		 * @return string|WP_Error Sanitized content or WP_Error on failure.
+		 */
+		private function sanitize_svg_content( $file_content ) {
+			if ( ! class_exists( 'enshrined\svgSanitize\Sanitizer' ) ) {
+				return new WP_Error( 'svg_sanitizer_missing', 'SVG Sanitizer library is not loaded.' );
+			}
+
+			$sanitizer = new \enshrined\svgSanitize\Sanitizer();
+			$sanitized_content = $sanitizer->sanitize( $file_content );
+
+			if ( false === $sanitized_content || empty( $sanitized_content ) ) {
+				return new WP_Error( 'svg_sanitization_failed', 'SVG sanitization failed. The file may contain malicious code.' );
+			}
+
+			return $sanitized_content;
+		}
+
+		/**
+		 * Validate HTTP response for security
+		 *
+		 * @param array  $response HTTP response array.
+		 * @param string $expected_type Expected MIME type (optional).
+		 * @return true|WP_Error True on success, WP_Error on failure.
+		 */
+		private function validate_http_response( $response, $expected_type = '' ) {
+			if ( is_wp_error( $response ) ) {
+				return $response;
+			}
+
+			$response_code = wp_remote_retrieve_response_code( $response );
+			if ( 200 !== $response_code ) {
+				return new WP_Error( 'invalid_response_code', sprintf( 'HTTP response code: %d', $response_code ) );
+			}
+
+			// Validate Content-Type header if expected type is provided.
+			if ( ! empty( $expected_type ) ) {
+				$content_type = wp_remote_retrieve_header( $response, 'content-type' );
+				if ( $content_type && false === strpos( $content_type, $expected_type ) ) {
+					return new WP_Error(
+						'content_type_mismatch',
+						sprintf( 'Expected %s but got %s', $expected_type, $content_type )
+					);
+				}
+			}
+
+			// Check file size limit (10MB default).
+			$content_length = wp_remote_retrieve_header( $response, 'content-length' );
+			$max_size = apply_filters( 'demo_importer_plus_max_file_size', 10 * 1024 * 1024 ); // 10MB.
+
+			if ( $content_length && $content_length > $max_size ) {
+				return new WP_Error(
+					'file_too_large',
+					sprintf( 'File size (%s) exceeds maximum allowed size (%s)', size_format( $content_length ), size_format( $max_size ) )
+				);
+			}
+
+			return true;
 		}
 
 	}
