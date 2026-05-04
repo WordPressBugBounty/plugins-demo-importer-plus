@@ -39,7 +39,7 @@ class Ajax {
 
 			$data = array();
 			switch ( $demo_action ) {
-				case 'test-connection':
+				case 'check-connection':
 					$data = static::test_server_connection( $request );
 					break;
 				case 'check-server-config':
@@ -346,7 +346,7 @@ class Ajax {
 			$required_plugin[ 'active' ]    = is_plugin_active( $required_plugin[ 'init' ] );
 		}
 
-		return $required_plugins;
+		return static::sort_plugins_by_dependencies( $required_plugins );
 	}
 
 	/**
@@ -397,6 +397,58 @@ class Ajax {
 			'message' => sprintf( __( 'Plugin "%s" is Activated', 'demo-importer-plus' ), $data[ 'Name' ] ?? 'Unknown' ),
 			'data'    => $data,
 		);
+	}
+
+	/**
+	 * Sort a plugin list so each plugin's dependencies appear before it.
+	 *
+	 * Uses the same `demo_importer_plus_plugin_dependencies` filter as
+	 * PluginManagement::sort_by_dependencies() so both paths share one config.
+	 *
+	 * @since 1.0.11
+	 * @param array $plugins Flat plugin list, each item has at least a 'slug' key.
+	 * @return array Sorted plugin list.
+	 */
+	protected static function sort_plugins_by_dependencies( array $plugins ): array {
+
+		/**
+		 * Filters known plugin dependency pairs used to determine activation order.
+		 * Each key is a dependent slug; value is a slug or array of slugs that must
+		 * be active first.
+		 *
+		 * @param array $dependencies Map of [ dependent_slug => slug|slug[] ].
+		 */
+		$dependencies = apply_filters(
+			'demo_importer_plus_plugin_dependencies',
+			array(
+				'wte-elementor-widgets' => array( 'wp-travel-engine', 'elementor' ),
+			)
+		);
+
+		if ( empty( $dependencies ) ) {
+			return $plugins;
+		}
+
+		$dependencies = array_map( function ( $dep ) {
+			return (array) $dep;
+		}, $dependencies );
+
+		usort( $plugins, function ( $a, $b ) use ( $dependencies ) {
+			$a_slug = $a[ 'slug' ] ?? '';
+			$b_slug = $b[ 'slug' ] ?? '';
+
+			if ( isset( $dependencies[ $a_slug ] ) && in_array( $b_slug, $dependencies[ $a_slug ], true ) ) {
+				return 1;
+			}
+
+			if ( isset( $dependencies[ $b_slug ] ) && in_array( $a_slug, $dependencies[ $b_slug ], true ) ) {
+				return -1;
+			}
+
+			return 0;
+		} );
+
+		return $plugins;
 	}
 
 	/**

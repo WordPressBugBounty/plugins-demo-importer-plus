@@ -105,5 +105,18 @@ class Demo_Importer_Customizer_Import {
 
 		// Update theme mods.
 		update_option( 'theme_mods_' . $theme_name, $options );
+
+		// Fire customize_save_after so themes can run post-save processing
+		// (e.g. clearing CSS caches, regenerating dynamic stylesheets).
+		// Without this, imported settings sit in the DB but theme hooks never fire,
+		// leaving the frontend unchanged until the user manually republishes.
+		if ( ! class_exists( 'WP_Customize_Manager' ) ) {
+			require_once ABSPATH . 'wp-includes/class-wp-customize-manager.php';
+		}
+		global $wp_customize;
+		if ( ! ( $wp_customize instanceof WP_Customize_Manager ) ) {
+			$wp_customize = new WP_Customize_Manager();
+		}
+		do_action( 'customize_save_after', $wp_customize );
 	}
 }

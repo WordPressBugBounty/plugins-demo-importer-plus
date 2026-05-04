@@ -125,6 +125,11 @@ class PluginManagement {
 			wp_send_json_error( $markup );
 		}
 
+		// Sort inactive and notinstalled lists so dependency plugins are
+		// activated/installed before the plugins that depend on them.
+		$response[ 'inactive' ]     = $this->sort_by_dependencies( $response[ 'inactive' ] );
+		$response[ 'notinstalled' ] = $this->sort_by_dependencies( $response[ 'notinstalled' ] );
+
 		$data = array(
 			'required_plugins'             => $response,
 			'third_party_required_plugins' => $third_party_required_plugins,
@@ -136,6 +141,67 @@ class PluginManagement {
 		} else {
 			wp_send_json_success( $data );
 		}
+	}
+
+	/**
+	 * Sort a plugin list so each plugin's dependencies appear before it.
+	 *
+	 * The dependency map is filterable via `demo_importer_plus_plugin_dependencies`
+	 * so themes/plugins can register their own pairs without patching this file.
+	 * Keys are dependent slugs, values are the slugs they depend on.
+	 *
+	 * @since 1.0.11
+	 * @param array $plugins List of plugin arrays, each with at least a 'slug' key.
+	 * @return array Sorted plugin list.
+	 */
+	private function sort_by_dependencies( array $plugins ): array {
+
+		/**
+		 * Filters known plugin dependency pairs used to determine activation order.
+		 *
+		 * @param array $dependencies Map of [ dependent_slug => dependency_slug ].
+		 */
+		/**
+		 * Each key is a dependent slug; the value is a slug or array of slugs
+		 * that must be activated before it.
+		 *
+		 * @param array $dependencies Map of [ dependent_slug => slug|slug[] ].
+		 */
+		$dependencies = apply_filters(
+			'demo_importer_plus_plugin_dependencies',
+			array(
+				// WTE Elementor Widgets requires both WP Travel Engine and Elementor.
+				'wte-elementor-widgets' => array( 'wp-travel-engine', 'elementor' ),
+			)
+		);
+
+		if ( empty( $dependencies ) ) {
+			return $plugins;
+		}
+
+		// Normalise all values to arrays for uniform handling.
+		$dependencies = array_map( function ( $dep ) {
+			return (array) $dep;
+		}, $dependencies );
+
+		usort( $plugins, function ( $a, $b ) use ( $dependencies ) {
+			$a_slug = $a[ 'slug' ] ?? '';
+			$b_slug = $b[ 'slug' ] ?? '';
+
+			// $a depends on $b → $b must come first.
+			if ( isset( $dependencies[ $a_slug ] ) && in_array( $b_slug, $dependencies[ $a_slug ], true ) ) {
+				return 1;
+			}
+
+			// $b depends on $a → $a must come first.
+			if ( isset( $dependencies[ $b_slug ] ) && in_array( $a_slug, $dependencies[ $b_slug ], true ) ) {
+				return -1;
+			}
+
+			return 0;
+		} );
+
+		return $plugins;
 	}
 
 	public function pro_plugin_exist ( $lite_version = '' ) {

@@ -141,6 +141,7 @@ class WXRImporter extends EventStream {
 
 		add_action( 'wxr_importer.processed.post', array( $this, 'track_post' ), 10, 2 );
 		add_action( 'wxr_importer.processed.term', array( $this, 'track_term' ), 10, 2 );
+		add_action( 'wxr_importer.process_already_imported.term', array( $this, 'track_already_imported_term' ), 10, 1 );
 
 		add_action( 'import_end', array( $this, 'import_end' ) );
 
@@ -333,11 +334,188 @@ class WXRImporter extends EventStream {
 	}
 
 	/**
+	 * Track Already Imported Term
+	 *
+	 * When a term already exists locally (same slug+taxonomy), the WXR importer fires
+	 * process_already_imported.term instead of processed.term, so track_term is never
+	 * called. This means the old-demo-ID → local-ID mapping is never recorded, and
+	 * remap_wte_packages cannot remap package-categories term ID keys, leaving prices
+	 * stored under the demo server's term IDs which never match local term IDs.
+	 *
+	 * @since 1.0.11
+	 * @param array $data Raw term data from the WXR file (includes 'id', 'slug', 'taxonomy').
+	 */
+	public function track_already_imported_term( $data ) {
+		if ( empty( $data['taxonomy'] ) || empty( $data['slug'] ) || empty( $data['id'] ) ) {
+			return;
+		}
+		$existing = term_exists( $data['slug'], $data['taxonomy'] );
+		if ( ! $existing || is_wp_error( $existing ) ) {
+			return;
+		}
+		$term_id = is_array( $existing ) ? (int) $existing['term_id'] : (int) $existing;
+		$this->track_term( $term_id, $data );
+	}
+
+	/**
 	 * Import End.
 	 */
 	public function import_end() {
 		update_option( '_demo_importer_posts_mapping', self::$post_mapping );
 		update_option( '_demo_importer_terms_mapping', self::$taxonomy_term_mapping );
+
+		$this->remap_wte_packages();
+	}
+
+	/**
+	 * Remap WP Travel Engine package IDs and term IDs after import, then regenerate
+	 * cached price metas. Also callable as a standalone repair for already-imported data.
+	 *
+	 * Pass empty arrays (or call with no arguments) to run in repair mode, which skips
+	 * post-ID remapping and relies solely on the label-name fallback to fix term IDs.
+	 *
+	 * @since 1.0.11
+	 * @param array $post_mapping  trip/trip-packages old-ID→new-ID map (from current import session).
+	 * @param array $term_mapping  trip-packages-categories old-ID→new-ID map (from current import session).
+	 */
+	public static function repair_wte_prices( array $post_mapping = array(), array $term_mapping = array() ): void {
+		// Only run when WP Travel Engine is active.
+		if ( ! taxonomy_exists( 'trip-packages-categories' ) ) {
+			return;
+		}
+
+		$trip_packages_map = $post_mapping['trip-packages'] ?? array();
+		$trips_map         = $post_mapping['trip'] ?? array();
+		$category_terms    = $term_mapping['trip-packages-categories'] ?? array();
+
+		// 1. Remap packages_ids, trip_ID and primary_package on each trip (import-time only).
+		if ( ! empty( $trip_packages_map ) ) {
+			foreach ( $trips_map as $trip_id ) {
+				$package_ids     = get_post_meta( $trip_id, 'packages_ids', true );
+				$new_package_ids = array();
+
+				if ( is_array( $package_ids ) ) {
+					foreach ( $package_ids as $package_id ) {
+						if ( ! empty( $trip_packages_map[ $package_id ] ) ) {
+							$new_package_id = (int) $trip_packages_map[ $package_id ];
+							update_post_meta( $new_package_id, 'trip_ID', $trip_id );
+							$new_package_ids[] = $new_package_id;
+						}
+					}
+				}
+
+				if ( ! empty( $new_package_ids ) ) {
+					update_post_meta( $trip_id, 'packages_ids', $new_package_ids );
+				}
+
+				$old_primary = (int) get_post_meta( $trip_id, 'primary_package', true );
+				if ( ! empty( $old_primary ) && ! empty( $trip_packages_map[ $old_primary ] ) ) {
+					update_post_meta( $trip_id, 'primary_package', (int) $trip_packages_map[ $old_primary ] );
+				}
+			}
+		}
+
+		// 2. Remap package-categories term IDs for every trip-packages post.
+		//    Strategy: use the import-time $category_terms map first; for any term ID
+		//    not covered by it, fall back to matching the embedded 'labels' value
+		//    (e.g. "Adult", "Child") against local trip-packages-categories terms by name.
+		//    This handles the common case where WTE default terms already existed locally
+		//    and the import-time mapping was never recorded.
+		global $wpdb;
+
+		$rows = $wpdb->get_results( "SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = 'package-categories'" );
+		foreach ( $rows as $row ) {
+			$package_categories = maybe_unserialize( $row->meta_value );
+			if ( ! is_array( $package_categories ) ) {
+				continue;
+			}
+
+			$embedded_labels = $package_categories['labels'] ?? array();
+			$effective_map   = $category_terms;
+
+			// Build per-package effective term ID map.
+			foreach ( array_keys( $package_categories['c_ids'] ?? array() ) as $old_id ) {
+				if ( isset( $effective_map[ $old_id ] ) ) {
+					continue;
+				}
+				// ID already valid locally — no remapping needed.
+				$local_term = get_term( $old_id, 'trip-packages-categories' );
+				if ( $local_term && ! is_wp_error( $local_term ) ) {
+					$effective_map[ $old_id ] = $old_id;
+					continue;
+				}
+				// Fall back to matching the embedded label name against local terms.
+				$label = $embedded_labels[ $old_id ] ?? '';
+				if ( $label ) {
+					$found = get_term_by( 'name', $label, 'trip-packages-categories' );
+					if ( $found && ! is_wp_error( $found ) ) {
+						$effective_map[ $old_id ] = $found->term_id;
+					}
+				}
+			}
+
+			// Skip if nothing would actually change.
+			$needs_update = false;
+			foreach ( array_keys( $package_categories['c_ids'] ?? array() ) as $old_id ) {
+				if ( isset( $effective_map[ $old_id ] ) && (int) $effective_map[ $old_id ] !== (int) $old_id ) {
+					$needs_update = true;
+					break;
+				}
+			}
+			if ( ! $needs_update ) {
+				continue;
+			}
+
+			$new_package_categories = array();
+			foreach ( $package_categories as $key => $value ) {
+				if ( is_array( $value ) ) {
+					foreach ( $value as $k => $v ) {
+						$new_key = $effective_map[ $k ] ?? $k;
+						if ( 'c_ids' === $key ) {
+							$new_package_categories[ $key ][ $new_key ] = $new_key;
+						} else {
+							$new_package_categories[ $key ][ $new_key ] = $v;
+						}
+					}
+				} else {
+					$new_package_categories[ $key ] = $value;
+				}
+			}
+			update_post_meta( $row->post_id, 'package-categories', $new_package_categories );
+		}
+
+		// 3. Fix the primary_pricing_category option if it points to a stale demo term ID.
+		$primary_cat_id = (int) get_option( 'primary_pricing_category', 0 );
+		if ( $primary_cat_id ) {
+			$local_primary = get_term( $primary_cat_id, 'trip-packages-categories' );
+			if ( ! $local_primary || is_wp_error( $local_primary ) ) {
+				// Try import-time map first.
+				if ( isset( $category_terms[ $primary_cat_id ] ) ) {
+					update_option( 'primary_pricing_category', (int) $category_terms[ $primary_cat_id ] );
+				} else {
+					// Fall back to the first available local term (usually "Adult").
+					$first = get_terms( array( 'taxonomy' => 'trip-packages-categories', 'hide_empty' => false, 'number' => 1 ) );
+					if ( ! empty( $first ) && ! is_wp_error( $first ) ) {
+						update_option( 'primary_pricing_category', (int) $first[0]->term_id );
+					}
+				}
+			}
+		}
+
+		// 4. Regenerate cached price metas (_s_price, wp_travel_engine_setting_trip_price, etc.)
+		if ( class_exists( '\WPTravelEngine\Modules\TripSearch' ) ) {
+			\WPTravelEngine\Modules\TripSearch::update_metas_for_trip_search();
+		}
+	}
+
+	/**
+	 * Called at end of WXR import — delegates to repair_wte_prices with the
+	 * mappings collected during this import session.
+	 *
+	 * @since 1.0.11
+	 */
+	private function remap_wte_packages(): void {
+		self::repair_wte_prices( self::$post_mapping, self::$taxonomy_term_mapping );
 	}
 
 }
