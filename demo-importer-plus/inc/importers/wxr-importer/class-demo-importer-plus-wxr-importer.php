@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Demo_Importer_Plus_WXR_Importer {
 
-	private static $post_mapping = [];
+	private static $post_mapping = array();
 
-	private static $taxonomy_term_mapping = [];
+	private static $taxonomy_term_mapping = array();
 
 	/**
 	 * Instance of Demo_Importer_Plus_WXR_Importer
@@ -69,7 +69,6 @@ class Demo_Importer_Plus_WXR_Importer {
 		} else {
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'real_mime_types' ), 10, 4 );
 		}
-
 	}
 
 	/**
@@ -81,12 +80,12 @@ class Demo_Importer_Plus_WXR_Importer {
 	 * @since 2.0.2
 	 */
 	public function sanitize_svg_files( array $file ): array {
-		if ( $file[ 'type' ] == 'image/svg+xml' ) {
+		if ( $file['type'] == 'image/svg+xml' ) {
 			$sanitizer    = new Sanitizer();
-			$sanitizedSvg = $sanitizer->sanitize( file_get_contents( $file[ 'tmp_name' ] ) );
+			$sanitizedSvg = $sanitizer->sanitize( file_get_contents( $file['tmp_name'] ) );
 
 			if ( $sanitizedSvg ) {
-				file_put_contents( $file[ 'tmp_name' ], $sanitizedSvg );
+				file_put_contents( $file['tmp_name'], $sanitizedSvg );
 			} else {
 				return array( 'error' => 'Invalid SVG file.' );
 			}
@@ -98,7 +97,7 @@ class Demo_Importer_Plus_WXR_Importer {
 	/**
 	 * Track Imported Post
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int   $post_id Post ID.
 	 * @param array $data Raw data imported for the post.
 	 */
 	public function track_post( $post_id = 0, $data = array() ) {
@@ -106,26 +105,25 @@ class Demo_Importer_Plus_WXR_Importer {
 		update_post_meta( $post_id, '_demo_importer_plus_sites_imported_post', true );
 		update_post_meta( $post_id, '_demo_importer_enable_for_batch', true );
 
-		if ( isset( $data[ 'post_type' ] ) && (int) $data[ 'post_id' ] !== (int) $post_id ) {
-			self::$post_mapping[ $data[ 'post_type' ] ][ $data[ 'post_id' ] ] = $post_id;
+		if ( isset( $data['post_type'] ) && (int) $data['post_id'] !== (int) $post_id ) {
+			self::$post_mapping[ $data['post_type'] ][ $data['post_id'] ] = $post_id;
 		}
 
 		// Set the full width template for the pages.
-		if ( isset( $data[ 'post_type' ] ) && 'page' === $data[ 'post_type' ] ) {
+		if ( isset( $data['post_type'] ) && 'page' === $data['post_type'] ) {
 			$is_elementor_page = get_post_meta( $post_id, '_elementor_version', true );
 			$theme_status      = Demo_Importer_Plus::get_instance()->get_theme_status();
 			if ( 'installed-and-active' !== $theme_status && $is_elementor_page ) {
 				update_post_meta( $post_id, '_wp_page_template', 'elementor_header_footer' );
 			}
-		} else if ( isset( $data[ 'post_type' ] ) && 'attachment' === $data[ 'post_type' ] ) {
-			$remote_url          = isset( $data[ 'guid' ] ) ? $data[ 'guid' ] : '';
+		} elseif ( isset( $data['post_type'] ) && 'attachment' === $data['post_type'] ) {
+			$remote_url          = isset( $data['guid'] ) ? $data['guid'] : '';
 			$attachment_hash_url = Demo_Importer_Plus_Sites_Image_Importer::get_instance()->get_hash_image( $remote_url );
 			if ( ! empty( $attachment_hash_url ) ) {
 				update_post_meta( $post_id, '_demo_importer_plus_sites_image_hash', $attachment_hash_url );
 				update_post_meta( $post_id, '_elementor_source_image_hash', $attachment_hash_url );
 			}
 		}
-
 	}
 
 	/**
@@ -135,7 +133,7 @@ class Demo_Importer_Plus_WXR_Importer {
 	 */
 	public function track_term( $term_id, $data ) {
 
-		self::$taxonomy_term_mapping[ $data[ 'taxonomy' ] ][ $data[ 'id' ] ] = $term_id;
+		self::$taxonomy_term_mapping[ $data['taxonomy'] ][ $data['id'] ] = $term_id;
 
 		update_term_meta( $term_id, '_demo_importer_plus_imported_term', true );
 	}
@@ -150,7 +148,15 @@ class Demo_Importer_Plus_WXR_Importer {
 	 */
 	public function pre_post_data( $postdata, $data ) {
 
-		$postdata[ 'guid' ] = '';
+		$postdata['guid'] = '';
+
+		if ( 'page' === ( $postdata['post_type'] ?? '' ) && ! empty( $postdata['post_name'] ) ) {
+			$existing_page = get_page_by_path( $postdata['post_name'], OBJECT, 'page' );
+
+			if ( $existing_page ) {
+				$postdata['ID'] = $existing_page->ID;
+			}
+		}
 
 		return $postdata;
 	}
@@ -165,11 +171,11 @@ class Demo_Importer_Plus_WXR_Importer {
 	 */
 	public function pre_process_post( $data, $meta, $comments, $terms ) {
 
-		if ( isset( $data[ 'post_content' ] ) ) {
+		if ( isset( $data['post_content'] ) ) {
 
 			$meta_data = wp_list_pluck( $meta, 'key' );
 
-			$is_attachment          = ( 'attachment' === $data[ 'post_type' ] ) ? true : false;
+			$is_attachment          = ( 'attachment' === $data['post_type'] ) ? true : false;
 			$is_elementor_page      = in_array( '_elementor_version', $meta_data, true );
 			$is_beaver_builder_page = in_array( '_fl_builder_enabled', $meta_data, true );
 			$is_brizy_page          = in_array( 'brizy_post_uid', $meta_data, true );
@@ -177,9 +183,9 @@ class Demo_Importer_Plus_WXR_Importer {
 			$disable_post_content = apply_filters( 'demo_importer_plus_pre_process_post_disable_content', ( $is_attachment || $is_elementor_page || $is_beaver_builder_page || $is_brizy_page ) );
 
 			if ( $disable_post_content ) {
-				$data[ 'post_content' ] = '';
+				$data['post_content'] = '';
 			} else {
-				$data[ 'post_content' ] = wp_slash( $data[ 'post_content' ] );
+				$data['post_content'] = wp_slash( $data['post_content'] );
 			}
 		}
 
@@ -189,10 +195,10 @@ class Demo_Importer_Plus_WXR_Importer {
 	/**
 	 * Different MIME type of different PHP version
 	 *
-	 * @param array $defaults File data array containing 'ext', 'type', and 'proper_filename' keys.
+	 * @param array  $defaults File data array containing 'ext', 'type', and 'proper_filename' keys.
 	 * @param string $file Full path to the file.
 	 * @param string $filename The name of the file.
-	 * @param array $mimes Key is the file extension with value as the mime type.
+	 * @param array  $mimes Key is the file extension with value as the mime type.
 	 * @param string $real_mime Real MIME type of the uploaded file.
 	 */
 	public function real_mime_types_5_1_0( $defaults, $file, $filename, $mimes, $real_mime ) {
@@ -202,10 +208,10 @@ class Demo_Importer_Plus_WXR_Importer {
 	/**
 	 * Different MIME type of different PHP version
 	 *
-	 * @param array $defaults File data array containing 'ext', 'type', and 'proper_filename' keys.
+	 * @param array  $defaults File data array containing 'ext', 'type', and 'proper_filename' keys.
 	 * @param string $file Full path to the file.
 	 * @param string $filename The name of the file.
-	 * @param array $mimes Key is the file extension with value as the mime type.
+	 * @param array  $mimes Key is the file extension with value as the mime type.
 	 */
 	public function real_mime_types( $defaults, $file, $filename, $mimes ) {
 		return $this->real_mimes( $defaults, $filename );
@@ -214,7 +220,7 @@ class Demo_Importer_Plus_WXR_Importer {
 	/**
 	 * Real Mime Type
 	 *
-	 * @param array $defaults File data array containing 'ext', 'type', and 'proper_filename' keys.
+	 * @param array  $defaults File data array containing 'ext', 'type', and 'proper_filename' keys.
 	 * @param string $filenameThe name of the file (may differ from $file due to $file being in a tmp directory).
 	 */
 	public function real_mimes( $defaults, $filename ) {
@@ -232,14 +238,14 @@ class Demo_Importer_Plus_WXR_Importer {
 
 		// Check for .wxr.xml extension (legitimate WXR files)
 		if ( $ext === 'xml' && preg_match( '/\.wxr\.xml$/i', $filename ) ) {
-			$defaults[ 'ext' ]  = 'xml';
-			$defaults[ 'type' ] = 'text/xml';
+			$defaults['ext']  = 'xml';
+			$defaults['type'] = 'text/xml';
 		}
 
 		// Check for .wpforms.json or .cartflows.json extensions
 		if ( $ext === 'json' && ( preg_match( '/\.wpforms\.json$/i', $filename ) || preg_match( '/\.cartflows\.json$/i', $filename ) ) ) {
-			$defaults[ 'ext' ]  = 'json';
-			$defaults[ 'type' ] = 'text/plain';
+			$defaults['ext']  = 'json';
+			$defaults['type'] = 'text/plain';
 		}
 
 		return $defaults;
@@ -255,8 +261,8 @@ class Demo_Importer_Plus_WXR_Importer {
 	 */
 	public function fix_image_duplicate_issue( $data, $meta, $comments, $terms ) {
 
-		$remote_url     = ! empty( $data[ 'attachment_url' ] ) ? $data[ 'attachment_url' ] : $data[ 'guid' ];
-		$data[ 'guid' ] = $remote_url;
+		$remote_url   = ! empty( $data['attachment_url'] ) ? $data['attachment_url'] : $data['guid'];
+		$data['guid'] = $remote_url;
 
 		return $data;
 	}
@@ -293,7 +299,7 @@ class Demo_Importer_Plus_WXR_Importer {
 			ini_set( 'zlib.output_compression', false );
 			error_reporting( $previous );
 
-			if ( $GLOBALS[ 'is_nginx' ] ) {
+			if ( $GLOBALS['is_nginx'] ) {
 				header( 'X-Accel-Buffering: no' );
 				header( 'Content-Encoding: none' );
 			}
@@ -301,7 +307,7 @@ class Demo_Importer_Plus_WXR_Importer {
 			echo esc_html( ':' . str_repeat( ' ', 2048 ) . "\n\n" );
 		}
 
-		$xml_id = isset( $_REQUEST[ 'xml_id' ] ) ? absint( $_REQUEST[ 'xml_id' ] ) : '';
+		$xml_id = isset( $_REQUEST['xml_id'] ) ? absint( $_REQUEST['xml_id'] ) : '';
 		if ( ! empty( $xml_id ) ) {
 			$xml_url = get_attached_file( $xml_id );
 		}
@@ -338,10 +344,13 @@ class Demo_Importer_Plus_WXR_Importer {
 		add_action( 'wxr_importer.processed.post', array( $this, 'track_post' ), 10, 2 );
 		add_action( 'wxr_importer.processed.term', array( $this, 'track_term' ), 10, 2 );
 
-		add_action( 'import_end', function () {
-			update_option( '_demo_importer_posts_mapping', self::$post_mapping );
-			update_option( '_demo_importer_terms_mapping', self::$taxonomy_term_mapping );
-		} );
+		add_action(
+			'import_end',
+			function () {
+				update_option( '_demo_importer_posts_mapping', self::$post_mapping );
+				update_option( '_demo_importer_terms_mapping', self::$taxonomy_term_mapping );
+			}
+		);
 
 		flush();
 
@@ -353,7 +362,7 @@ class Demo_Importer_Plus_WXR_Importer {
 			'error'  => false,
 		);
 		if ( is_wp_error( $response ) ) {
-			$complete[ 'error' ] = $response->get_error_message();
+			$complete['error'] = $response->get_error_message();
 		}
 
 		$this->emit_sse_message( $complete );
@@ -369,10 +378,10 @@ class Demo_Importer_Plus_WXR_Importer {
 	 */
 	public function custom_upload_mimes( $mimes ) {
 
-		$mimes[ 'svg' ]  = 'image/svg+xml';
-		$mimes[ 'svgz' ] = 'image/svg+xml';
-		$mimes[ 'xml' ]  = 'text/xml';
-		$mimes[ 'json' ] = 'application/json';
+		$mimes['svg']  = 'image/svg+xml';
+		$mimes['svgz'] = 'image/svg+xml';
+		$mimes['xml']  = 'text/xml';
+		$mimes['json'] = 'application/json';
 
 		return $mimes;
 	}
@@ -381,7 +390,7 @@ class Demo_Importer_Plus_WXR_Importer {
 	 * Start the xml import.
 	 *
 	 * @param string $path Absolute path to the XML file.
-	 * @param int $post_id Uploaded XML file ID.
+	 * @param int    $post_id Uploaded XML file ID.
 	 */
 	public function get_xml_data( $path, $post_id ) {
 
@@ -453,14 +462,14 @@ class Demo_Importer_Plus_WXR_Importer {
 	/**
 	 * Send message when a post has been imported.
 	 *
-	 * @param int $id Post ID.
+	 * @param int   $id Post ID.
 	 * @param array $data Post data saved to the DB.
 	 */
 	public function imported_post( $id, $data ) {
 		$this->emit_sse_message(
 			array(
 				'action' => 'updateDelta',
-				'type'   => ( 'attachment' === $data[ 'post_type' ] ) ? 'media' : 'posts',
+				'type'   => ( 'attachment' === $data['post_type'] ) ? 'media' : 'posts',
 				'delta'  => 1,
 			)
 		);
@@ -475,7 +484,7 @@ class Demo_Importer_Plus_WXR_Importer {
 		$this->emit_sse_message(
 			array(
 				'action' => 'updateDelta',
-				'type'   => ( 'attachment' === $data[ 'post_type' ] ) ? 'media' : 'posts',
+				'type'   => ( 'attachment' === $data['post_type'] ) ? 'media' : 'posts',
 				'delta'  => 1,
 			)
 		);
@@ -538,7 +547,6 @@ class Demo_Importer_Plus_WXR_Importer {
 
 		flush();
 	}
-
 }
 
 Demo_Importer_Plus_WXR_Importer::instance();

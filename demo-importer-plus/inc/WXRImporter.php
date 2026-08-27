@@ -26,14 +26,14 @@ class WXRImporter extends EventStream {
 	 *
 	 * @var array
 	 */
-	protected static array $post_mapping = [];
+	protected static array $post_mapping = array();
 
 	/**
 	 * Taxonomy Term Mapping.
 	 *
 	 * @var array
 	 */
-	protected static array $taxonomy_term_mapping = [];
+	protected static array $taxonomy_term_mapping = array();
 
 	/**
 	 * WXR file path.
@@ -66,7 +66,7 @@ class WXRImporter extends EventStream {
 		$transient_key = demo_importer_plus_get_unique_key( $wxr_url, 'wxr_file' );
 
 		$results = get_transient( $transient_key );
-		if ( ! $results || ! file_exists( $results[ 'file' ] ) ) {
+		if ( ! $results || ! file_exists( $results['file'] ) ) {
 			$temp_file = download_url( $wxr_url, 300 );
 
 			if ( is_wp_error( $temp_file ) ) {
@@ -92,19 +92,19 @@ class WXRImporter extends EventStream {
 							'xml'  => 'text/xml',
 							'json' => 'text/plain',
 						),
-					) )
+					)
+				)
 			);
 
-			if ( isset( $results[ 'error' ] ) ) {
-				return new WP_Error( 'php_upload_error', $results[ 'error' ] );
+			if ( isset( $results['error'] ) ) {
+				return new WP_Error( 'php_upload_error', $results['error'] );
 			}
 
 			$this->set_importer();
 
+			$information = $this->importer->get_preliminary_information( $results['file'] );
 
-			$information = $this->importer->get_preliminary_information( $results[ 'file' ] );
-
-			$results[ '__meta' ] = array(
+			$results['__meta'] = array(
 				'posts'    => $information->post_count ?? 0,
 				'media'    => $information->media_count ?? 0,
 				'terms'    => $information->term_count,
@@ -112,7 +112,7 @@ class WXRImporter extends EventStream {
 				'users'    => count( $information->users ) ?? 0,
 			);
 
-			$results[ '__meta' ][ 'total_count' ] = array_sum( array_values( $results[ '__meta' ] ) );
+			$results['__meta']['total_count'] = array_sum( array_values( $results['__meta'] ) );
 
 			set_transient( $transient_key, $results, HOUR_IN_SECONDS );
 		}
@@ -169,7 +169,6 @@ class WXRImporter extends EventStream {
 
 	/**
 	 * Import WXR.
-	 *
 	 */
 	public function import( $file ) {
 
@@ -213,8 +212,8 @@ class WXRImporter extends EventStream {
 	 */
 	public function fix_image_duplicate_issue( $data, $meta, $comments, $terms ): array {
 
-		$remote_url     = ! empty( $data[ 'attachment_url' ] ) ? $data[ 'attachment_url' ] : $data[ 'guid' ];
-		$data[ 'guid' ] = $remote_url;
+		$remote_url   = ! empty( $data['attachment_url'] ) ? $data['attachment_url'] : $data['guid'];
+		$data['guid'] = $remote_url;
 
 		return $data;
 	}
@@ -222,14 +221,14 @@ class WXRImporter extends EventStream {
 	/**
 	 * Send a message when a post has been imported.
 	 *
-	 * @param int $id Post ID.
+	 * @param int   $id Post ID.
 	 * @param array $data Post data saved to the DB.
 	 */
 	public function imported_post( $id, $data ) {
 		$this->emit_sse_message(
 			array(
 				'action' => 'updateDelta',
-				'type'   => ( 'attachment' === $data[ 'post_type' ] ) ? 'media' : 'posts',
+				'type'   => ( 'attachment' === $data['post_type'] ) ? 'media' : 'posts',
 				'delta'  => 1,
 			)
 		);
@@ -244,7 +243,7 @@ class WXRImporter extends EventStream {
 		$this->emit_sse_message(
 			array(
 				'action' => 'updateDelta',
-				'type'   => ( 'attachment' === $data[ 'post_type' ] ) ? 'media' : 'posts',
+				'type'   => ( 'attachment' === $data['post_type'] ) ? 'media' : 'posts',
 				'delta'  => 1,
 			)
 		);
@@ -292,7 +291,7 @@ class WXRImporter extends EventStream {
 	/**
 	 * Track Imported Post
 	 *
-	 * @param int $post_id Post ID.
+	 * @param int   $post_id Post ID.
 	 * @param array $data Raw data imported for the post.
 	 */
 	public function track_post( $post_id = 0, $data = array() ) {
@@ -300,19 +299,19 @@ class WXRImporter extends EventStream {
 		update_post_meta( $post_id, '_demo_importer_plus_sites_imported_post', true );
 		update_post_meta( $post_id, '_demo_importer_enable_for_batch', true );
 
-		if ( isset( $data[ 'post_type' ] ) && (int) $data[ 'post_id' ] !== (int) $post_id ) {
-			self::$post_mapping[ $data[ 'post_type' ] ][ $data[ 'post_id' ] ] = $post_id;
+		if ( isset( $data['post_type'] ) && (int) $data['post_id'] !== (int) $post_id ) {
+			self::$post_mapping[ $data['post_type'] ][ $data['post_id'] ] = $post_id;
 		}
 
 		// Set the full width template for the pages.
-		if ( isset( $data[ 'post_type' ] ) && 'page' === $data[ 'post_type' ] ) {
+		if ( isset( $data['post_type'] ) && 'page' === $data['post_type'] ) {
 			$is_elementor_page = get_post_meta( $post_id, '_elementor_version', true );
 			$theme_status      = Demo_Importer_Plus::get_instance()->get_theme_status();
 			if ( 'installed-and-active' !== $theme_status && $is_elementor_page ) {
 				update_post_meta( $post_id, '_wp_page_template', 'elementor_header_footer' );
 			}
-		} else if ( isset( $data[ 'post_type' ] ) && 'attachment' === $data[ 'post_type' ] ) {
-			$remote_url          = $data[ 'guid' ] ?? '';
+		} elseif ( isset( $data['post_type'] ) && 'attachment' === $data['post_type'] ) {
+			$remote_url          = $data['guid'] ?? '';
 			$attachment_hash_url = Demo_Importer_Plus_Sites_Image_Importer::get_instance()->get_hash_image( $remote_url );
 			if ( ! empty( $attachment_hash_url ) ) {
 				update_post_meta( $post_id, '_demo_importer_plus_sites_image_hash', $attachment_hash_url );
@@ -328,7 +327,7 @@ class WXRImporter extends EventStream {
 	 */
 	public function track_term( $term_id, $data ) {
 
-		self::$taxonomy_term_mapping[ $data[ 'taxonomy' ] ][ $data[ 'id' ] ] = $term_id;
+		self::$taxonomy_term_mapping[ $data['taxonomy'] ][ $data['id'] ] = $term_id;
 
 		update_term_meta( $term_id, '_demo_importer_plus_imported_term', true );
 	}
@@ -388,39 +387,58 @@ class WXRImporter extends EventStream {
 		$trips_map         = $post_mapping['trip'] ?? array();
 		$category_terms    = $term_mapping['trip-packages-categories'] ?? array();
 
-		// 1. Remap packages_ids, trip_ID and primary_package on each trip (import-time only).
-		if ( ! empty( $trip_packages_map ) ) {
-			foreach ( $trips_map as $trip_id ) {
-				$package_ids     = get_post_meta( $trip_id, 'packages_ids', true );
-				$new_package_ids = array();
+		// 1. Remap packages_ids, trip_ID and primary_package on each trip. The WXR file
+		// carries no primary_package value, so when the stored one is missing or does
+		// not resolve to one of the trip's packages, the first package becomes primary.
+		$trip_ids = ! empty( $trips_map )
+			? $trips_map
+			: get_posts(
+				array(
+					'post_type'      => 'trip',
+					'post_status'    => 'any',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+				)
+			);
 
-				if ( is_array( $package_ids ) ) {
-					foreach ( $package_ids as $package_id ) {
-						if ( ! empty( $trip_packages_map[ $package_id ] ) ) {
-							$new_package_id = (int) $trip_packages_map[ $package_id ];
-							update_post_meta( $new_package_id, 'trip_ID', $trip_id );
-							$new_package_ids[] = $new_package_id;
-						}
+		foreach ( $trip_ids as $trip_id ) {
+			$package_ids     = get_post_meta( $trip_id, 'packages_ids', true );
+			$new_package_ids = array();
+
+			if ( is_array( $package_ids ) ) {
+				foreach ( $package_ids as $package_id ) {
+					$new_package_id = (int) ( $trip_packages_map[ $package_id ] ?? $package_id );
+
+					// Drop IDs that do not resolve to a real local package.
+					if ( 'trip-packages' !== get_post_type( $new_package_id ) ) {
+						continue;
 					}
-				}
 
-				if ( ! empty( $new_package_ids ) ) {
-					update_post_meta( $trip_id, 'packages_ids', $new_package_ids );
-				}
-
-				$old_primary = (int) get_post_meta( $trip_id, 'primary_package', true );
-				if ( ! empty( $old_primary ) && ! empty( $trip_packages_map[ $old_primary ] ) ) {
-					update_post_meta( $trip_id, 'primary_package', (int) $trip_packages_map[ $old_primary ] );
+					update_post_meta( $new_package_id, 'trip_ID', $trip_id );
+					$new_package_ids[] = $new_package_id;
 				}
 			}
+
+			if ( empty( $new_package_ids ) ) {
+				continue;
+			}
+
+			update_post_meta( $trip_id, 'packages_ids', $new_package_ids );
+
+			$old_primary = (int) get_post_meta( $trip_id, 'primary_package', true );
+			$new_primary = (int) ( $trip_packages_map[ $old_primary ] ?? $old_primary );
+			if ( ! in_array( $new_primary, $new_package_ids, true ) ) {
+				$new_primary = $new_package_ids[0];
+			}
+			update_post_meta( $trip_id, 'primary_package', $new_primary );
 		}
 
 		// 2. Remap package-categories term IDs for every trip-packages post.
-		//    Strategy: use the import-time $category_terms map first; for any term ID
-		//    not covered by it, fall back to matching the embedded 'labels' value
-		//    (e.g. "Adult", "Child") against local trip-packages-categories terms by name.
-		//    This handles the common case where WTE default terms already existed locally
-		//    and the import-time mapping was never recorded.
+		// Strategy: use the import-time $category_terms map first; for any term ID
+		// not covered by it, fall back to matching the embedded 'labels' value
+		// (e.g. "Adult", "Child") against local trip-packages-categories terms by name.
+		// This handles the common case where WTE default terms already existed locally
+		// and the import-time mapping was never recorded.
 		global $wpdb;
 
 		$rows = $wpdb->get_results( "SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = 'package-categories'" );
@@ -452,6 +470,21 @@ class WXRImporter extends EventStream {
 						$effective_map[ $old_id ] = $found->term_id;
 					}
 				}
+			}
+
+			// Point _primary_category_id at the remapped "Adult" category (first one as fallback).
+			$mapped_c_ids = array();
+			foreach ( array_keys( $package_categories['c_ids'] ?? array() ) as $old_id ) {
+				$mapped_c_ids[] = (int) ( $effective_map[ $old_id ] ?? $old_id );
+			}
+			if ( ! empty( $mapped_c_ids ) && ! in_array( (int) get_post_meta( $row->post_id, '_primary_category_id', true ), $mapped_c_ids, true ) ) {
+				$adult_old_id = array_search( 'Adult', $embedded_labels, true );
+				$adult_id     = false !== $adult_old_id ? (int) ( $effective_map[ $adult_old_id ] ?? $adult_old_id ) : 0;
+				update_post_meta(
+					$row->post_id,
+					'_primary_category_id',
+					in_array( $adult_id, $mapped_c_ids, true ) ? $adult_id : $mapped_c_ids[0]
+				);
 			}
 
 			// Skip if nothing would actually change.
@@ -494,7 +527,13 @@ class WXRImporter extends EventStream {
 					update_option( 'primary_pricing_category', (int) $category_terms[ $primary_cat_id ] );
 				} else {
 					// Fall back to the first available local term (usually "Adult").
-					$first = get_terms( array( 'taxonomy' => 'trip-packages-categories', 'hide_empty' => false, 'number' => 1 ) );
+					$first = get_terms(
+						array(
+							'taxonomy'   => 'trip-packages-categories',
+							'hide_empty' => false,
+							'number'     => 1,
+						)
+					);
 					if ( ! empty( $first ) && ! is_wp_error( $first ) ) {
 						update_option( 'primary_pricing_category', (int) $first[0]->term_id );
 					}
@@ -517,5 +556,4 @@ class WXRImporter extends EventStream {
 	private function remap_wte_packages(): void {
 		self::repair_wte_prices( self::$post_mapping, self::$taxonomy_term_mapping );
 	}
-
 }

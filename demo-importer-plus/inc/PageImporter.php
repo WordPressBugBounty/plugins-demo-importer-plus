@@ -53,31 +53,38 @@ class PageImporter extends Importer {
 		$server    = new DemoServer();
 		$page_data = $server->fetch_page( $this->page_id, $this->demo_id );
 
-		$content = $page_data[ 'original_content' ] ?? $page_data[ 'content' ][ 'rendered' ] ?? '';
+		$content = $page_data['original_content'] ?? $page_data['content']['rendered'] ?? '';
 
 		if ( 'elementor' === $default_page_builder ) {
-			if ( isset( $page_data[ 'options-data' ][ 'elementor_load_fa4_shim' ] ) ) {
-				update_option( 'elementor_load_fa4_shim', wp_kses_post( $page_data[ 'options-data' ][ 'elementor_load_fa4_shim' ] ) );
+			if ( isset( $page_data['options-data']['elementor_load_fa4_shim'] ) ) {
+				update_option( 'elementor_load_fa4_shim', wp_kses_post( $page_data['options-data']['elementor_load_fa4_shim'] ) );
 			}
 		}
+
+		$slug             = sanitize_title( $page_data['slug'] ?? '' );
+		$existing_page_id = $this->get_page_id_by_slug( $slug );
 
 		$post_args = array(
 			'post_type'    => 'page',
 			'post_status'  => 'draft',
-			'post_title'   => sanitize_text_field( $page_data[ 'title' ][ 'rendered' ] ?? '' ),
+			'post_title'   => sanitize_text_field( $page_data['title']['rendered'] ?? '' ),
 			'post_content' => wp_kses_post( $content ),
-			'post_excerpt' => wp_kses_post( $page_data[ 'excerpt' ][ 'rendered' ] ),
+			'post_excerpt' => wp_kses_post( $page_data['excerpt']['rendered'] ),
 		);
+
+		if ( $existing_page_id ) {
+			$post_args['ID'] = $existing_page_id;
+		}
 
 		$this->new_page_id = wp_insert_post( $post_args );
 
 		// TODO: Look for use of this meta.
 		update_post_meta( $this->new_page_id, '_demo_importer_enable_for_batch', true );
 
-		$post_metas = $page_data[ 'post-meta' ] ?? array();
+		$post_metas = $page_data['post-meta'] ?? array();
 		$this->import_post_meta( is_array( $post_metas ) ? $post_metas : array() );
 
-		$options = $page_data[ 'options-data' ] ?? array();
+		$options = $page_data['options-data'] ?? array();
 		$this->import_options( is_array( $options ) ? $options : array() );
 
 		do_action( 'demo_importer_plus_process_single', $this->new_page_id, $this );
@@ -87,6 +94,22 @@ class PageImporter extends Importer {
 			'id'             => $this->new_page_id,
 			'link'           => get_permalink( $this->new_page_id ),
 		);
+	}
+
+	/**
+	 * Find an existing page by slug (catches pages created outside this importer, e.g. by another plugin on activation).
+	 *
+	 * @param string $slug Page slug.
+	 * @return int Existing post ID, or 0 if not found.
+	 */
+	protected function get_page_id_by_slug( string $slug ) {
+		if ( ! $slug ) {
+			return 0;
+		}
+
+		$post_id = get_page_by_path( $slug, OBJECT, 'page' );
+
+		return $post_id ? (int) $post_id->ID : 0;
 	}
 
 	/**
@@ -103,7 +126,7 @@ class PageImporter extends Importer {
 				if ( is_array( $meta_value ) ) {
 					$meta_value = wp_slash( wp_json_encode( $meta_value ) );
 				}
-			} else if ( is_serialized( $meta_value, true ) ) {
+			} elseif ( is_serialized( $meta_value, true ) ) {
 				$meta_value = maybe_unserialize( stripslashes( $meta_value ) );
 			}
 
